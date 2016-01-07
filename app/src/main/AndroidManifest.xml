@@ -9,6 +9,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ActMain">
+
+        </activity>
+        <activity
+            android:name=".ActFadeout"
+            android:label="@string/title_activity_act_fadeout"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
