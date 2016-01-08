@@ -1,14 +1,10 @@
 *.iml
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /build
 /captures
 
 # Built application files
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/gradle.xml
+/.idea/
 *.apk
 *.ap_
 
