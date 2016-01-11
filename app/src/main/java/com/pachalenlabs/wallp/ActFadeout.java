@@ -1,3 +1,4 @@
+/*
 package com.pachalenlabs.wallp;
 
 import android.app.Activity;
@@ -30,5 +31,43 @@ public class ActFadeout extends Activity {
         }
     };
 
+}*/
+
+package com.pachalenlabs.wallp;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.support.annotation.UiThread;
+import android.view.animation.Animation;
+
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.NoTitle;
+import org.androidannotations.annotations.res.AnimationRes;
+
+@NoTitle
+@Fullscreen
+@EActivity(R.layout.activity_act_fadeout)
+public class ActFadeout extends Activity {
+
+    @AnimationRes
+    Animation fadeOut;
+    @Background
+    void doInBackground () {
+        setFadeOut();
+    }
+
+    @UiThread
+    void setFadeOut () {
+        Intent i = new Intent(ActFadeout.this, ActMain_.class); //인텐트 생성(현 액티비티, 새로 실행할 액티비티)
+        startActivity(i);
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        //overridePendingTransition 이란 함수를 이용하여 fade in,out 효과를줌. 순서가 중요
+    }
 }
+
+
+
 
