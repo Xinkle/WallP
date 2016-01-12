@@ -3,7 +3,6 @@ package com.pachalenlabs.wallp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
-import android.view.animation.Animation;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -19,7 +18,6 @@ public class ActLogo extends Activity {
     Runnable mrun = new Runnable(){
         @Override
         public void run() {
-            Animation fadeOut,fadeIn;
             ActMain_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
