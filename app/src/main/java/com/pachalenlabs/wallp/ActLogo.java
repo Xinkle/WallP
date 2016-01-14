@@ -1,15 +1,16 @@
 
 package com.pachalenlabs.wallp;
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 @Fullscreen
 @EActivity(R.layout.activity_act_logo)
-public class ActLogo extends Activity {
+public class ActLogo extends FragmentActivity {
     Handler ActLogSetDelay_;
     @AfterViews
     void setDelay(){
