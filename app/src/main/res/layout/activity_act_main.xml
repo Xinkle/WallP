@@ -6,4 +6,24 @@
     android:orientation="vertical"
     tools:context=".ui.activity.MainActivity">
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.pachalenlabs.wallp.ui.fragment.WallpaperFragment_"
+        android:id="@+id/fragment"
+        tools:layout="@layout/fragment_wallpaper" />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
+        android:id="@+id/fragment2"
+        tools:layout="@layout/fragment_information" />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
+        android:id="@+id/fragment3"
+        tools:layout="@layout/fragment_information" />
 </LinearLayout>
