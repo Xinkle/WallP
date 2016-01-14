@@ -1,4 +1,4 @@
-package com.pachalenlabs.wallp.module;
+package com.pachalenlabs.wallp;
 
 import android.app.Application;
 
