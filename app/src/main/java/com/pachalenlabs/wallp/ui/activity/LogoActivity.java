@@ -1,16 +1,18 @@
 
-package com.pachalenlabs.wallp;
-
+package com.pachalenlabs.wallp.ui.activity;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
+
+import com.pachalenlabs.wallp.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
+
 @Fullscreen
 @EActivity(R.layout.activity_act_logo)
-public class ActLogo extends FragmentActivity {
+public class LogoActivity extends Activity {
     Handler ActLogSetDelay_;
     @AfterViews
     void setDelay(){
@@ -19,7 +21,7 @@ public class ActLogo extends FragmentActivity {
     Runnable mrun = new Runnable(){
         @Override
         public void run() {
-            ActMain_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
+            MainActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     };

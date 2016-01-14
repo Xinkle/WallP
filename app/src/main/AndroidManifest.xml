@@ -7,14 +7,15 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.Holo.NoActionBar"
-        android:name="com.pachalenlabs.wallp.module.WPApp_">
+        android:theme="@style/AppTheme"
+        android:name=".WPApp_">
 
-        <activity android:name=".ActMain_">
+        <activity android:name=".ui.activity.MainActivity_"
+            android:theme="@style/AppTheme">
 
         </activity>
         <activity
-            android:name=".ActLogo_"
+            android:name=".ui.activity.LogoActivity_"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

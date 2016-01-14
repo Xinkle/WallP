@@ -1,19 +1,15 @@
 package com.pachalenlabs.wallp.module;
 
 /**
- * Created by Niklane on 2016-01-12.
- * Class for core function of WallP
- * Implemented by using singleton pattern
+ * Created by Niklane on 2016-01-14.
  */
 public class WPCore {
-    private WPCore _WPInstance;
+    private static WPCore ourInstance = new WPCore();
 
-    private WPCore(){}
+    public static WPCore getInstance() {
+        return ourInstance;
+    }
 
-    public WPCore getWPCore(){
-        if(_WPInstance == null){
-            _WPInstance = new WPCore();
-        }
-        return _WPInstance;
+    private WPCore() {
     }
 }
