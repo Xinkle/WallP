@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.pachalenlabs.wallp.R;
 
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -29,8 +28,7 @@ public class InformationFragment extends Fragment{
     public void setValues(int values){
         this.values.setText(String.valueOf(values));}
 
-    @Click
-    void information_image_button(){
-
+    public ImageButton getInformation_image_button(){
+        return information_image_button;
     }
 }
