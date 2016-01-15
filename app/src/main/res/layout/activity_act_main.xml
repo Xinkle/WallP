@@ -17,13 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
-        android:id="@+id/fragment2"
+        android:id="@+id/pictures_"
         tools:layout="@layout/fragment_information" />
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
-        android:id="@+id/fragment3"
+        android:id="@+id/exchangingPeriods_"
         tools:layout="@layout/fragment_information" />
 </LinearLayout>
