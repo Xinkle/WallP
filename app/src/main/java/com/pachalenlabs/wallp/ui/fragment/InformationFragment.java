@@ -2,6 +2,7 @@ package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.pachalenlabs.wallp.R;
@@ -16,15 +17,16 @@ import org.androidannotations.annotations.ViewById;
 
 @EFragment(R.layout.fragment_information)
 public class InformationFragment extends Fragment{
-
     @ViewById
-    TextView textView1_;
+    TextView textView1_,textView2_;
     @ViewById
-    TextView textView2_;
+    ImageButton informationIcon;
     @AfterViews
     public void setText(){
         Bundle extra = getArguments();
-        String id = extra.getString("title");
-        textView1_.setText(id);
+        String title = extra.getString("title");
+        textView1_.setText(title);
+        if( title == "사진 수" ) textView2_.setText(extra.getInt("Pictures"));
+        else textView2_.setText(extra.getInt("exchangingPeriods"));
     }
 }
