@@ -1,6 +1,7 @@
 package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -31,4 +32,7 @@ public class InformationFragment extends Fragment{
     public ImageButton getInformation_image_button(){
         return information_image_button;
     }
+    public void setInformationButtonClick(View.OnClickListener action){
+        information_image_button.setOnClickListener(action);
+    };
 }

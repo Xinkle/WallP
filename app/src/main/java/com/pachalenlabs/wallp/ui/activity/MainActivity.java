@@ -28,20 +28,21 @@ public class MainActivity extends AppCompatActivity {
         PictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
         PictureInformationFragment.setTitle("사진수");
         PictureInformationFragment.setValues(20);
-        PictureInformationFragment_InfoButton = PictureInformationFragment.getInformation_image_button();
-        PictureInformationFragment_InfoButton.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Log.d(Tag,"111111111111111111111111111");
-            }});
+                Log.d(Tag, "11");
+            }};
+        PictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
+
         ExchangeRatioFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.ExchangeRatioFragment);
         ExchangeRatioFragment.setTitle("교체 주기");
         ExchangeRatioFragment.setValues(30);
-        ExchangeRatioFragment_InfoButton = ExchangeRatioFragment.getInformation_image_button();
-        ExchangeRatioFragment_InfoButton.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener(){
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Log.d(Tag, "222222222222222222222222222");
-            }});
+            }};
+        ExchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
     }
 }
