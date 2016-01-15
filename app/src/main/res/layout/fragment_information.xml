@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#010000"
+    android:weightSum="10"
+    android:onClick="InformationIconClicked">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/title"
+        android:layout_weight="5"
+        android:textColor="#faf4f4" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/values"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="4"
+        android:textColor="#faf4f4" />
+
+    <ImageButton
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/information_image_button"
+        android:layout_weight="1"
+        android:background="@android:drawable/ic_dialog_info"></ImageButton>
 </LinearLayout>
