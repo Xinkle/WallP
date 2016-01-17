@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">WallP</string>
     <string name="title_activity_act_fadeout">ActFadeout</string>
+    <string name="action_settings">Settings</string>
 </resources>
