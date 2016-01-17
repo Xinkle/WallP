@@ -11,19 +11,19 @@
         android:layout_height="wrap_content"
         android:name="com.pachalenlabs.wallp.ui.fragment.WallpaperFragment_"
         android:id="@+id/fragment"
-        tools:layout="@layout/fragment_wallpaper" />
+        tools:layout="@layout/wallpaper_fragment" />
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
         android:id="@+id/PictureInformationFragment"
-        tools:layout="@layout/fragment_information" />
+        tools:layout="@layout/information_fragment" />
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
         android:id="@+id/ExchangeRatioFragment"
-        tools:layout="@layout/fragment_information" />
+        tools:layout="@layout/information_fragment" />
 </LinearLayout>

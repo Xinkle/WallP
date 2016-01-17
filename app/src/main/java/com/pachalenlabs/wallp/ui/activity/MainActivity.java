@@ -10,7 +10,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 
-@EActivity(R.layout.activity_act_main)
+@EActivity(R.layout.main_activity_layout)
 public class MainActivity extends AppCompatActivity {
 
     @FragmentById(R.id.PictureInformationFragment)

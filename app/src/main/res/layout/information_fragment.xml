@@ -27,7 +27,7 @@
     <ImageButton
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/informationImageButton"
+        android:id="@+id/information_icon_imageButton"
         android:layout_weight="1"
         android:background="@android:drawable/ic_dialog_info"></ImageButton>
 </LinearLayout>

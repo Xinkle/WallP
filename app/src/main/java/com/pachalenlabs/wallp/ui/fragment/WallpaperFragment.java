@@ -10,6 +10,6 @@ import org.androidannotations.annotations.EFragment;
  * Created by Niklane on 2016-01-15.
  */
 
-@EFragment(R.layout.fragment_wallpaper)
+@EFragment(R.layout.wallpaper_fragment)
 public class WallpaperFragment extends Fragment{
 }

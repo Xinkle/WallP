@@ -11,13 +11,13 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 
 @Fullscreen
-@EActivity(R.layout.activity_act_logo)
+@EActivity(R.layout.logo_activity_layout)
 public class LogoActivity extends Activity {
-    Handler _actLogSetDelay;
+    Handler _delayHandler;
     @AfterViews
     void setDelay(){
-        _actLogSetDelay = new Handler();
-        _actLogSetDelay.postDelayed(mrun, 2000);}
+        _delayHandler = new Handler();
+        _delayHandler.postDelayed(mrun, 2000);}
     Runnable mrun = new Runnable(){
         @Override
         public void run() {
