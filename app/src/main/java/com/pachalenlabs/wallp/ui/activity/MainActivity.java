@@ -1,9 +1,7 @@
 package com.pachalenlabs.wallp.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
@@ -15,34 +13,29 @@ import org.androidannotations.annotations.FragmentById;
 @EActivity(R.layout.activity_act_main)
 public class MainActivity extends AppCompatActivity {
 
-    @FragmentById
-    InformationFragment PictureInformationFragment;
-    @FragmentById
-    InformationFragment ExchangeRatioFragment;
-    ImageButton PictureInformationFragment_InfoButton;
-    ImageButton ExchangeRatioFragment_InfoButton;
-
-    String Tag = "MainActivity";
+    @FragmentById(R.id.PictureInformationFragment)
+    InformationFragment _pictureInformationFragment;
+    @FragmentById(R.id.ExchangeRatioFragment)
+    InformationFragment _exchangeRatioFragment;
     @AfterViews
     public void setUp_UI(){
-        PictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
-        PictureInformationFragment.setTitle("사진수");
-        PictureInformationFragment.setValues(20);
+        _pictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
+        _pictureInformationFragment.setTitle("사진수");
+        _pictureInformationFragment.setValues(20);
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Log.d(Tag, "11");
-            }};
-        PictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
 
-        ExchangeRatioFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.ExchangeRatioFragment);
-        ExchangeRatioFragment.setTitle("교체 주기");
-        ExchangeRatioFragment.setValues(30);
+            }};
+        _pictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
+
+        _exchangeRatioFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.ExchangeRatioFragment);
+        _exchangeRatioFragment.setTitle("교체 주기");
+        _exchangeRatioFragment.setValues(30);
         View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Log.d(Tag, "222222222222222222222222222");
             }};
-        ExchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
+        _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
     }
 }

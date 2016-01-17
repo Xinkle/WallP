@@ -16,23 +16,14 @@ import org.androidannotations.annotations.ViewById;
 
 @EFragment(R.layout.fragment_information)
 public class InformationFragment extends Fragment{
-    @ViewById
-    TextView title;
-    @ViewById
+    @ViewById(R.id.title)
+    TextView _title;
+    @ViewById(R.id.values)
     TextView values;
-    @ViewById
-    ImageButton information_image_button;
-
-    public void setTitle(String title){
-        this.title.setText(title);}
-
-    public void setValues(int values){
-        this.values.setText(String.valueOf(values));}
-
-    public ImageButton getInformation_image_button(){
-        return information_image_button;
-    }
+    @ViewById(R.id.informationImageButton)
+    ImageButton _informationImageButton;
+    public void setTitle(String title){this._title.setText(title);}
+    public void setValues(int values){this.values.setText(String.valueOf(values));}
     public void setInformationButtonClick(View.OnClickListener action){
-        information_image_button.setOnClickListener(action);
-    };
-}
+        _informationImageButton.setOnClickListener(action);}
+}//class
