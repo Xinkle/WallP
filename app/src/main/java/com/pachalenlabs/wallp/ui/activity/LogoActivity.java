@@ -10,7 +10,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 
-@Fullscreen
 @EActivity(R.layout.activity_act_logo)
 public class LogoActivity extends Activity {
     Handler ActLogSetDelay_;

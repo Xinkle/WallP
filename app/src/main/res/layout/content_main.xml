@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.activity.MainActivity"
+    tools:showIn="@layout/activity_act_main">
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.pachalenlabs.wallp.ui.fragment.WallpaperFragment_"
+        android:id="@+id/fragment"
+        tools:layout="@layout/fragment_wallpaper" />
+
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment_"
+        android:id="@+id/fragment2"
+        tools:layout="@layout/wallpaper_switch_fragment" />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
+        android:id="@+id/PictureInformationFragment"
+        tools:layout="@layout/fragment_information" />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
+        android:id="@+id/ExchangeRatioFragment"
+        tools:layout="@layout/fragment_information" />
+</LinearLayout>
