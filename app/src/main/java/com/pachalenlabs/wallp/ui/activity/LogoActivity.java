@@ -10,19 +10,19 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 
-@EActivity(R.layout.activity_act_logo)
+@Fullscreen
+@EActivity(R.layout.logo_activity_layout)
 public class LogoActivity extends Activity {
-    Handler ActLogSetDelay_;
+    Handler _delayHandler;
     @AfterViews
     void setDelay(){
-        ActLogSetDelay_ = new Handler();
-        ActLogSetDelay_.postDelayed(mrun, 2000);}
+        _delayHandler = new Handler();
+        _delayHandler.postDelayed(mrun, 2000);}
     Runnable mrun = new Runnable(){
         @Override
         public void run() {
             MainActivity_.intent(getApplicationContext()).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        }
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);}
     };
 }
 
