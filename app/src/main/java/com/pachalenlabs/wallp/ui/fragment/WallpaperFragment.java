@@ -1,14 +1,10 @@
 package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
-import android.util.Log;
-import android.widget.ImageButton;
 
 import com.pachalenlabs.wallp.R;
 
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
 
 /**
  * Created by Niklane on 2016-01-15.
@@ -18,7 +14,7 @@ import org.androidannotations.annotations.ViewById;
 public class WallpaperFragment extends Fragment{
 
     String Tag = "WallpaperFragment";
-
+/*
     @ViewById(R.id.emptyPlace_imageButton)
     ImageButton _emptyPlaceImageButton;
     @ViewById(R.id.leftView_imageButton)
@@ -39,5 +35,5 @@ public class WallpaperFragment extends Fragment{
     @Click(R.id.rightView_imageButton)
     void rightViewClicked(){
         Log.d(Tag,"3");
-    }
+    }*/
 }
