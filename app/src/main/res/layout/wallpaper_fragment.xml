@@ -1,7 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
 <com.ssomai.android.scalablelayout.ScalableLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/main_textview"
+    android:background="#1d1d1d"
+    sl:scale_base_width="400"
+    sl:scale_base_height="200"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sl="http://schemas.android.com/apk/res-auto">
 
-    
-    >
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        sl:scale_left="140"
+        sl:scale_top="10"
+        sl:scale_width="125"
+        sl:scale_height="180"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/imageView"
+        android:background="@mipmap/ic_launcher" />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton"
+        android:scaleType="center"
+        sl:scale_left="90"
+        sl:scale_top="60"
+        sl:scale_width="50"
+        sl:scale_height="90"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton2"
+        android:scaleType="center"
+        sl:scale_left="265"
+        sl:scale_top="60"
+        sl:scale_width="50"
+        sl:scale_height="90" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton3"
+        sl:scale_left="255"
+        sl:scale_top="10"
+        sl:scale_width="50"
+        sl:scale_height="50"/>
 </com.ssomai.android.scalablelayout.ScalableLayout>
