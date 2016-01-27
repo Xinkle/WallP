@@ -9,6 +9,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:2.0.0-alpha7'
         // replace with the current version of the android-apt plugin
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
     }
 }
 
@@ -65,4 +66,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
+    compile 'com.ssomai:android.scalablelayout:2.1.0'
 }

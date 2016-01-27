@@ -1,36 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#1d1d1d">
+<com.ssomai.android.scalablelayout.ScalableLayout
 
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="360dp"
-        android:id="@+id/imageView"
-        android:layout_centerInParent="true"
-        android:background="@mipmap/ic_launcher" />
+    
+    >
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/cancel_imageButton"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_toRightOf="@id/imageView"/>
-
-    <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="120dp"
-        android:id="@+id/imageButton"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/imageView" />
-
-    <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="120dp"
-        android:id="@+id/imageButton2"
-        android:layout_centerVertical="true"
-        android:layout_alignTop="@+id/imageButton"
-        android:layout_toStartOf="@+id/imageView" />
-
-</RelativeLayout>
+</com.ssomai.android.scalablelayout.ScalableLayout>
