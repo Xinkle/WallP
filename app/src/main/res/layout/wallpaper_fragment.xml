@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:id="@+id/imageView"
-        android:background="@mipmap/ic_launcher" />
+        android:src="@drawable/test_wallpaper" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageButton3"
-        sl:scale_left="255"
+        sl:scale_left="265"
         sl:scale_top="10"
         sl:scale_width="50"
         sl:scale_height="50"/>
