@@ -14,6 +14,7 @@ import org.androidannotations.annotations.Fullscreen;
 @EActivity(R.layout.logo_activity_layout)
 public class LogoActivity extends Activity {
     Handler _delayHandler;
+
     @AfterViews
     void setDelay(){
         _delayHandler = new Handler();
