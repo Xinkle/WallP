@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:2.0.0-alpha7'
+        classpath 'com.android.tools.build:gradle:2.0.0-alpha9'
         // replace with the current version of the android-apt plugin
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
 
@@ -69,4 +69,5 @@ dependencies {
     // log lib
     compile 'log4j:log4j:1.2.17'
     compile 'de.mindpipe.android:android-logging-log4j:1.0.2@jar'
+    compile 'com.ssomai:android.scalablelayout:2.1.0'
 }
