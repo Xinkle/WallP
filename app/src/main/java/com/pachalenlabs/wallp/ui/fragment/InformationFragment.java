@@ -14,7 +14,7 @@ import org.androidannotations.annotations.ViewById;
  * Created by Niklane on 2016-01-15.
  */
 
-@EFragment(R.layout.information_fragment)
+@EFragment
 public class InformationFragment extends Fragment{
     @ViewById(R.id.title)
     TextView _title;
