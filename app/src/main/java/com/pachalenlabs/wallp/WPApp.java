@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 /**
  * Created by Niklane on 2016-01-12.
  */
-
 @EApplication
 public class WPApp extends Application {
     @Override
