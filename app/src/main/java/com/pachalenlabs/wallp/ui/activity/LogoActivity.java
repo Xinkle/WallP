@@ -11,7 +11,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 
 @Fullscreen
-@EActivity(R.layout.logo_activity_layout)
+@EActivity
 public class LogoActivity extends Activity {
     Handler _delayHandler;
 
