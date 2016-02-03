@@ -1,25 +1,26 @@
 package com.pachalenlabs.wallp.ui.activity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.ViewById;
 
 @EActivity
 public class MainActivity extends AppCompatActivity {
@@ -28,8 +29,11 @@ public class MainActivity extends AppCompatActivity {
     InformationFragment PictureInformationFragment;
     @FragmentById
     InformationFragment ExchangeRatioFragment;
+    @ViewById(R.id.show_selected_photo_imageView)
+    ImageView _selectedImageView;
 
-    String Tag = "MainActivity";
+    String
+            Tag= "MainActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,15 +46,17 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplication(),"Add Photo", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(),"dd", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent,1);
                 /*
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 */
             }
         });
-
-
         PictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
         PictureInformationFragment.setTitle("사진수");
         PictureInformationFragment.setValues(20);
@@ -70,6 +76,17 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(Tag, "222222222222222222222222222");
             }};
         ExchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1){
+            if(requestCode == Activity.RESULT_OK){
+                Uri uri = data.getData();
+                _selectedImageView.setImageURI(uri);
+
+            }
+        }
     }
 
     @Override
