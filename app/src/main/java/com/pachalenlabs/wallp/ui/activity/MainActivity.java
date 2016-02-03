@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 1){
-            if(requestCode == Activity.RESULT_OK){
+            if(resultCode == Activity.RESULT_OK){
                 Uri uri = data.getData();
                 _selectedImageView.setImageURI(uri);
 
