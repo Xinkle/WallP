@@ -25,15 +25,15 @@ import org.androidannotations.annotations.ViewById;
 @EActivity
 public class MainActivity extends AppCompatActivity {
 
+
+    public static final int  PICK_PICTURE  = 1;
     @FragmentById
-    InformationFragment PictureInformationFragment;
+    InformationFragment _pictureInformationFragment;
     @FragmentById
-    InformationFragment ExchangeRatioFragment;
+    InformationFragment _exchangeRatioFragment;
     @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedImageView;
-
-    String
-            Tag= "MainActivity";
+    String Tag= "MainActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,41 +50,40 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent,PICK_PICTURE);
                 /*
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 */
             }
         });
-        PictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
-        PictureInformationFragment.setTitle("사진수");
-        PictureInformationFragment.setValues(20);
+        _pictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
+        _pictureInformationFragment.setTitle("사진수");
+        _pictureInformationFragment.setValues(20);
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Log.d(Tag, "11");
             }};
-        PictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
+        _pictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
 
-        ExchangeRatioFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.ExchangeRatioFragment);
-        ExchangeRatioFragment.setTitle("교체 주기");
-        ExchangeRatioFragment.setValues(30);
+        _exchangeRatioFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.ExchangeRatioFragment);
+        _exchangeRatioFragment.setTitle("교체 주기");
+        _exchangeRatioFragment.setValues(30);
         View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Log.d(Tag, "222222222222222222222222222");
             }};
-        ExchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
+        _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 1){
+        if(requestCode == PICK_PICTURE){
             if(resultCode == Activity.RESULT_OK){
                 Uri uri = data.getData();
                 _selectedImageView.setImageURI(uri);
-
             }
         }
     }
