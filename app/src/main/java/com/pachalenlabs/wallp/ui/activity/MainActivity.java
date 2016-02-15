@@ -27,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static final int  PICK_PICTURE  = 1;
-    @FragmentById
+    @FragmentById(R.id.PictureInformationFragment)
     InformationFragment _pictureInformationFragment;
-    @FragmentById
+    @FragmentById(R.id.ExchangeRatioFragment)
     InformationFragment _exchangeRatioFragment;
     @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedImageView;
