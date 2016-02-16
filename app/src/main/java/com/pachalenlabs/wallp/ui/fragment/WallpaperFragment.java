@@ -32,20 +32,30 @@ public class WallpaperFragment extends Fragment{
     ImageButton _leftImageButton;
     @ViewById(R.id.right_imageButton)
     ImageButton _rightImageButton;
-    @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedPhotoImageView;
+
+    private View _wallPaperFragmentView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 4;
-        Bitmap src = BitmapFactory.decodeResource(getResources(), R.drawable.test_wallpaper,options);
-        //  Bitmap resized = Bitmap.createScaledBitmap( src, _selectedPhotoImageView.getWidth(),_selectedPhotoImageView.getHeight(), true );
-        _selectedPhotoImageView.setImageBitmap(src);
+
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        _wallPaperFragmentView = inflater.inflate(R.layout.wallpaper_fragment,container,false);
+        _selectedPhotoImageView = (ImageView) _wallPaperFragmentView.findViewById(R.id.show_selected_photo_imageView);
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+        Bitmap bitmapImage = BitmapFactory.decodeResource(getResources(),R.drawable.test_wallpaper,options);
+        //Log.d("TAG","@@@@@@@@@@@@@@@@@"+String.valueOf(d));
+        Bitmap resized = Bitmap.createScaledBitmap( bitmapImage,500,700, true );
+        _selectedPhotoImageView.setImageBitmap(resized);
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.wallpaper_switch_fragment, container, false);
     }

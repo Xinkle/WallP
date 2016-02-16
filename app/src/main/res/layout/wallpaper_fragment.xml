@@ -19,7 +19,8 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:id="@+id/show_selected_photo_imageView"
-        android:src="@drawable/test_wallpaper" />
+        android:longClickable="true"
+        />
 
     <ImageButton
         android:layout_width="wrap_content"
