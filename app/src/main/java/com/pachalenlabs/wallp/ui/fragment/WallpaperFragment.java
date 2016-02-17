@@ -1,15 +1,18 @@
 package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
-import android.util.Log;
-import android.widget.ImageButton;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.pachalenlabs.wallp.R;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -29,6 +32,8 @@ public class WallpaperFragment extends Fragment{
     ImageButton _leftImageButton;
     @ViewById(R.id.right_imageButton)
     ImageButton _rightImageButton;
+    @ViewById(R.id.show_selected_photo_imageView)
+    ImageView _selectedPhotoImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,11 +45,18 @@ public class WallpaperFragment extends Fragment{
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.wallpaper_fragment, container, false);
     }
-	
-    @Click(R.id.cancel_imageButton)
-    void leftViewClicked(){
-        Log.d(Tag,"1");
+
+    @AfterViews
+    void setupViews(){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 10;
+        Bitmap bitmapImage = BitmapFactory.decodeResource(getResources(),R.drawable.test_wallpaper,options);
+        Bitmap resized = Bitmap.createScaledBitmap( bitmapImage,500,700, true );
+        _selectedPhotoImageView.setImageBitmap(resized);
     }
+
+    @Click(R.id.cancel_imageButton)
+    void leftViewClicked() { Log.d(Tag,"1"); }
     @Click(R.id.right_imageButton)
     void cancelClicked(){
         Log.d(Tag,"2");
