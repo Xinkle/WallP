@@ -2,23 +2,26 @@
 package com.pachalenlabs.wallp.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 
 import com.pachalenlabs.wallp.R;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 
 @Fullscreen
-@EActivity(R.layout.logo_activity_layout)
+@EActivity
 public class LogoActivity extends Activity {
     Handler _delayHandler;
 
-    @AfterViews
-    void setDelay(){
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.logo_activity_layout);
         _delayHandler = new Handler();
-        _delayHandler.postDelayed(mrun, 2000);}
+        _delayHandler.postDelayed(mrun, 2000);
+    }
     Runnable mrun = new Runnable(){
         @Override
         public void run() {
