@@ -1,35 +1,39 @@
 package com.pachalenlabs.wallp.ui.activity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.ViewById;
 
 @EActivity
 public class MainActivity extends AppCompatActivity {
 
-    @FragmentById
-    InformationFragment PictureInformationFragment;
-    @FragmentById
-    InformationFragment ExchangeRatioFragment;
 
-    String Tag = "MainActivity";
+    public static final int  PICK_PICTURE  = 1;
+    @FragmentById
+    InformationFragment _pictureInformationFragment;
+    @FragmentById
+    InformationFragment _exchangeRatioFragment;
+    @ViewById(R.id.show_selected_photo_imageView)
+    ImageView _selectedImageView;
+    String Tag= "MainActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,34 +46,46 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplication(),"Add Photo", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(),"dd", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent,PICK_PICTURE);
                 /*
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 */
             }
         });
-
-
-        PictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
-        PictureInformationFragment.setTitle("사진수");
-        PictureInformationFragment.setValues(20);
+        _pictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
+        _pictureInformationFragment.setTitle("사진수");
+        _pictureInformationFragment.setValues(20);
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Log.d(Tag, "11");
             }};
-        PictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
+        _pictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
 
-        ExchangeRatioFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.ExchangeRatioFragment);
-        ExchangeRatioFragment.setTitle("교체 주기");
-        ExchangeRatioFragment.setValues(30);
+        _exchangeRatioFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.ExchangeRatioFragment);
+        _exchangeRatioFragment.setTitle("교체 주기");
+        _exchangeRatioFragment.setValues(30);
         View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Log.d(Tag, "222222222222222222222222222");
             }};
-        ExchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
+        _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == PICK_PICTURE){
+            if(resultCode == Activity.RESULT_OK){
+                Uri uri = data.getData();
+                _selectedImageView.setImageURI(uri);
+            }
+        }
     }
 
     @Override
