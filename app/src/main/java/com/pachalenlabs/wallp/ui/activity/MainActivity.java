@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,11 @@ import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 
 @EActivity
 public class MainActivity extends AppCompatActivity {
@@ -87,10 +93,30 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 Uri uri = data.getData();
                 _selectedImageView.setImageURI(uri);
+                copyFile(uri.getPath());
+
             }
         }
     }
-
+    public void copyFile(String imageFilePath){
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+            if (sd.canWrite()) {
+                String sourceImagePath= imageFilePath;
+                String destinationImagePath= "/path/to/destination/file.jpg";
+                File source= new File(data, sourceImagePath);
+                File destination= new File(sd, destinationImagePath);
+                if (source.exists()) {
+                    FileChannel src = new FileInputStream(source).getChannel();
+                    FileChannel dst = new FileOutputStream(destination).getChannel();
+                    dst.transferFrom(src, 0, src.size());
+                    src.close();
+                    dst.close();
+                }
+            }
+        } catch (Exception e) {}
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
