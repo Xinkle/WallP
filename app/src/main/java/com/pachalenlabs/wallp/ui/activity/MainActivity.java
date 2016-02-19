@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,12 @@ import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 @EActivity
 public class MainActivity extends AppCompatActivity {
@@ -91,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 _selectedImageView.setImageURI(uri);
                 _imageFilePath = getImagePath(uri);
-
+                copyFile(_imageFilePath,Environment.getDataDirectory().getPath());
             }
         }
     }
@@ -110,6 +117,34 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
 
         return path;
+    }
+    public static boolean copyFile(String sourceLocation, String destLocation) {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            if(sd.canWrite()){
+                File source=new File(sourceLocation);
+                File dest=new File(destLocation);
+                if(!dest.exists()){
+                    dest.createNewFile();
+                }
+                if(source.exists()){
+                    InputStream src=new FileInputStream(source);
+                    OutputStream dst=new FileOutputStream(dest);
+                    // Copy the bits from instream to outstream
+                    byte[] buf = new byte[1024];
+                    int len;
+                    while ((len = src.read(buf)) > 0) {
+                        dst.write(buf, 0, len);
+                    }
+                    src.close();
+                    dst.close();
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
