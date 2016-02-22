@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
+import com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     InformationFragment _pictureInformationFragment;
     @FragmentById(R.id.ExchangeRatioFragment)
     InformationFragment _exchangeRatioFragment;
+    @FragmentById(R.id.wallpaper_switch_fragment)
+    WallpaperSwtichFragment _wallpaperSwitchFragment;
     @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedImageView;
     String Tag= "MainActivity";
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 */
+                _wallpaperSwitchFragment.addWallpaper();
             }
         });
         _pictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
