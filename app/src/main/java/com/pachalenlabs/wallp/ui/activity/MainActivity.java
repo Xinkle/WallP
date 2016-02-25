@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
             }};
         _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == PICK_PICTURE){
@@ -96,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 _selectedImageView.setImageURI(uri);
                 _imageFilePath = getImagePath(uri);
-                copyFile(_imageFilePath,Environment.getExternalStorageDirectory().getAbsolutePath());
-             //   Log.d(Tag,"@@@@"+Environment.getExternalStorageDirectory());
+                copyFile(_imageFilePath);
             }
         }
     }
+    //**************************파일 복사를 위한 메소드*************************************************
     public String getImagePath(Uri uri){
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
@@ -117,14 +116,13 @@ public class MainActivity extends AppCompatActivity {
 
         return path;
     }
-    public static boolean copyFile(String sourceLocation, String destLocation) {
+    public static boolean copyFile(String sourceLocation) {
         try {
-
-            Bitmap bitmap = BitmapFactory.decodeFile(sourceLocation);
+            String fileName = new File(sourceLocation).getName();
             File sd = Environment.getExternalStorageDirectory();
             if(sd.canWrite()){
                 FileInputStream fis = new FileInputStream(sourceLocation);
-                FileOutputStream fos = new FileOutputStream(sd.getAbsolutePath()+"/WallP"+;
+                FileOutputStream fos = new FileOutputStream(sd.getAbsolutePath()+"/WallP/"+fileName);
                 int data = 0;
                 while((data=fis.read())!=-1) fos.write(data);
                 fis.close();
@@ -136,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+    //*********************************************************************************************
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
