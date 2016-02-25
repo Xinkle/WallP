@@ -30,8 +30,6 @@ import org.androidannotations.annotations.ViewById;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 @EActivity
 public class MainActivity extends AppCompatActivity {
@@ -98,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 _selectedImageView.setImageURI(uri);
                 _imageFilePath = getImagePath(uri);
-                copyFile(_imageFilePath,Environment.getDataDirectory().getPath());
+                copyFile(_imageFilePath,Environment.getExternalStorageDirectory().getAbsolutePath());
+             //   Log.d(Tag,"@@@@"+Environment.getExternalStorageDirectory());
             }
         }
     }
@@ -120,25 +119,16 @@ public class MainActivity extends AppCompatActivity {
     }
     public static boolean copyFile(String sourceLocation, String destLocation) {
         try {
+
+            Bitmap bitmap = BitmapFactory.decodeFile(sourceLocation);
             File sd = Environment.getExternalStorageDirectory();
             if(sd.canWrite()){
-                File source=new File(sourceLocation);
-                File dest=new File(destLocation);
-                if(!dest.exists()){
-                    dest.createNewFile();
-                }
-                if(source.exists()){
-                    InputStream src=new FileInputStream(source);
-                    OutputStream dst=new FileOutputStream(dest);
-                    // Copy the bits from instream to outstream
-                    byte[] buf = new byte[1024];
-                    int len;
-                    while ((len = src.read(buf)) > 0) {
-                        dst.write(buf, 0, len);
-                    }
-                    src.close();
-                    dst.close();
-                }
+                FileInputStream fis = new FileInputStream(sourceLocation);
+                FileOutputStream fos = new FileOutputStream(sd.getAbsolutePath()+"/WallP"+;
+                int data = 0;
+                while((data=fis.read())!=-1) fos.write(data);
+                fis.close();
+                fos.close();
             }
             return true;
         } catch (Exception ex) {
