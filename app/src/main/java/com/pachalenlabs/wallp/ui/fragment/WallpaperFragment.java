@@ -3,6 +3,7 @@ package com.pachalenlabs.wallp.ui.fragment;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.DrawableRes;
 
 /**
  * Created by Niklane on 2016-01-15.
@@ -60,6 +62,8 @@ public class WallpaperFragment extends Fragment{
     public void setImage(Uri imageURI){
         _selectedPhotoImageView.setImageURI(imageURI);
     }
+    public void setImage(Bitmap imageBitmap){ _selectedPhotoImageView.setImageBitmap(imageBitmap); }
+    public void setImage(Drawable imageDrawable){ _selectedPhotoImageView.setImageDrawable(imageDrawable);}
 
     @Click(R.id.cancel_imageButton)
     void leftViewClicked() { Log.d(Tag,"1"); }

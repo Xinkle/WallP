@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 */
-                _wallpaperSwitchFragment.addWallpaper();
             }
         });
         _pictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == PICK_PICTURE){
             if(resultCode == Activity.RESULT_OK){
                 Uri uri = data.getData();
-                _wallpaperFragment.setImage(uri);
+                _wallpaperSwitchFragment.addWallpaper(uri);
             }
         }
     }

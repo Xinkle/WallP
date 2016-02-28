@@ -1,7 +1,12 @@
 package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +15,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.pachalenlabs.wallp.R;
+import com.pachalenlabs.wallp.module.WPCore;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -24,13 +31,11 @@ import java.util.ArrayList;
 
 @EFragment
 public class WallpaperSwtichFragment extends Fragment{
-
-
     @ViewById(R.id.wallpaper_scroll_layout)
     LinearLayout _WallpapaerScrollLayout;
 
     WallpaperFragment _WallpaperFragment;
-
+    ArrayList<Uri> _ImageUris = new ArrayList<Uri>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,13 +53,37 @@ public class WallpaperSwtichFragment extends Fragment{
         _WallpaperFragment = (WallpaperFragment)getFragmentManager().findFragmentById(R.id.wallpeper_fragment);
     }
 
-    public void addWallpaper(){
+    public void addWallpaper(Uri imgUri){
         ImageView imgView = new ImageView(getActivity());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0.0F
+        );
+        int imageMargin = WPCore.getPixelValue(getActivity(), R.dimen.wallpeper_switch_margin);
+        Log.d("WallP", "Pixel : " + imageMargin + " Dimen : " + getResources().getDimension(R.dimen.wallpeper_switch_margin));
+        params.setMargins(imageMargin,imageMargin,imageMargin,imageMargin);
+        imgView.setScaleType(ImageView.ScaleType.FIT_START);
+        imgView.setLayoutParams(params);
 
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 10;
+        Bitmap bitmapImage = BitmapFactory.decodeResource(getResources(),R.drawable.test_wallpaper,options);
+        Bitmap resized = Bitmap.createScaledBitmap(bitmapImage,500,700, true );
+        imgView.setImageBitmap(resized);
+
+        imgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView iv = (ImageView)v;
+                _WallpaperFragment.setImage(iv.getDrawable());
+            }
+        });
+        _WallpapaerScrollLayout.addView(imgView);
     }
 
-    private void setImageToWallpaperFragment(){
-
+    private void setImageToWallpaperFragment(Uri imageUri){
+        _WallpaperFragment.setImage(imageUri);
     }
 
 }

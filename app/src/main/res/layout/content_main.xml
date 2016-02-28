@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.activity.MainActivity"
-    tools:showIn="@layout/main_activity_layout">
+    tools:showIn="@layout/main_activity_layout"
+    android:weightSum="1">
 
     <fragment
         android:layout_width="match_parent"
@@ -19,22 +20,23 @@
 
     <fragment
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:name="com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment_"
         android:id="@+id/wallpaper_switch_fragment"
-        tools:layout="@layout/wallpaper_switch_fragment" />
+        tools:layout="@layout/wallpaper_switch_fragment"
+        android:layout_weight="1"/>
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
         android:id="@+id/PictureInformationFragment"
-        tools:layout="@layout/information_fragment" />
+        tools:layout="@layout/information_fragment"/>
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
         android:id="@+id/ExchangeRatioFragment"
-        tools:layout="@layout/information_fragment" />
+        tools:layout="@layout/information_fragment"/>
 </LinearLayout>
