@@ -1,6 +1,7 @@
 package com.pachalenlabs.wallp.ui.activity;
 
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -30,6 +31,7 @@ import org.androidannotations.annotations.ViewById;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 @EActivity
 public class MainActivity extends AppCompatActivity {
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 _selectedImageView.setImageURI(uri);
                 _imageFilePath = getImagePath(uri);
                 copyFile(_imageFilePath);
+                setBackGround(_imageFilePath);
             }
         }
     }
@@ -134,7 +137,19 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
-    //*********************************************************************************************
+    //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
+    public void setBackGround(String imagePath){
+        Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
+        WallpaperManager myWallpaperManager
+                = WallpaperManager.getInstance(getApplicationContext());
+        try {
+            myWallpaperManager.setBitmap(wallPaperImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
