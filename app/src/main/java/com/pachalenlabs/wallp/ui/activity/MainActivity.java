@@ -2,10 +2,13 @@ package com.pachalenlabs.wallp.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +27,10 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 @EActivity
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     InformationFragment _exchangeRatioFragment;
     @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedImageView;
+    String _imageFilePath;
     String Tag= "MainActivity";
 
     @Override
@@ -80,17 +88,53 @@ public class MainActivity extends AppCompatActivity {
             }};
         _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == PICK_PICTURE){
             if(resultCode == Activity.RESULT_OK){
                 Uri uri = data.getData();
                 _selectedImageView.setImageURI(uri);
+                _imageFilePath = getImagePath(uri);
+                copyFile(_imageFilePath);
             }
         }
     }
+    //**************************파일 복사를 위한 메소드*************************************************
+    public String getImagePath(Uri uri){
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
+        cursor.close();
 
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
+    }
+    public static boolean copyFile(String sourceLocation) {
+        try {
+            String fileName = new File(sourceLocation).getName();
+            File sd = Environment.getExternalStorageDirectory();
+            if(sd.canWrite()){
+                FileInputStream fis = new FileInputStream(sourceLocation);
+                FileOutputStream fos = new FileOutputStream(sd.getAbsolutePath()+"/WallP/"+fileName);
+                int data = 0;
+                while((data=fis.read())!=-1) fos.write(data);
+                fis.close();
+                fos.close();
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+    //*********************************************************************************************
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
