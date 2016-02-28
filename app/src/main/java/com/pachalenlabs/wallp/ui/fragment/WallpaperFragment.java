@@ -3,6 +3,7 @@ package com.pachalenlabs.wallp.ui.fragment;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +55,10 @@ public class WallpaperFragment extends Fragment{
         Bitmap bitmapImage = BitmapFactory.decodeResource(getResources(),R.drawable.test_wallpaper,options);
         Bitmap resized = Bitmap.createScaledBitmap( bitmapImage,500,700, true );
         _selectedPhotoImageView.setImageBitmap(resized);
+    }
+
+    public void setImage(Uri imageURI){
+        _selectedPhotoImageView.setImageURI(imageURI);
     }
 
     @Click(R.id.cancel_imageButton)
