@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="center"
+        android:scaleType="fitXY"
         sl:scale_left="140"
         sl:scale_top="10"
         sl:scale_width="125"
