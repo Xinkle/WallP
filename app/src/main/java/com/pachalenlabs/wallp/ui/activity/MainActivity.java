@@ -148,7 +148,14 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+    //**************************뒤로가기 눌려졌을때 ***************************************************
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed(); //이걸 없애줘야 내가원하는 대로 이벤트 처리가됨
+        moveTaskToBack(true);
+        finish();
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
