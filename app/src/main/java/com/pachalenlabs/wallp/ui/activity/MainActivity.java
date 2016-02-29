@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -139,9 +140,15 @@ public class MainActivity extends AppCompatActivity {
     }
     //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
     public void setBackGround(String imagePath){
-        Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
+        //바탕화면 관리자 호출
         WallpaperManager myWallpaperManager
                 = WallpaperManager.getInstance(getApplicationContext());
+        //화면의 크기를 구함
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
+        Bitmap resized = Bitmap.createScaledBitmap( wallPaperImage, width, height, true );
         try {
             myWallpaperManager.setBitmap(wallPaperImage);
         } catch (IOException e) {
