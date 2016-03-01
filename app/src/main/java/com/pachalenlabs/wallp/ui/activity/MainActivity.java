@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
+import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
@@ -38,10 +39,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static final int  PICK_PICTURE  = 1;
+
     @FragmentById(R.id.PictureInformationFragment)
     InformationFragment _pictureInformationFragment;
     @FragmentById(R.id.ExchangeRatioFragment)
     InformationFragment _exchangeRatioFragment;
+    @FragmentById(R.id.ShowImageFragment)
+    WallpaperFragment _showImageFragment;
+
     @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedImageView;
     String _imageFilePath;
@@ -89,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(Tag, "222222222222222222222222222");
             }};
         _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
+
+        _showImageFragment = (WallpaperFragment) getFragmentManager().findFragmentById(R.id.ShowImageFragment);
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -98,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 _selectedImageView.setImageURI(uri);
                 _imageFilePath = getImagePath(uri);
                 copyFile(_imageFilePath);
-                setBackGround(_imageFilePath);
+                _showImageFragment.setImageView(_imageFilePath);
             }
         }
     }
