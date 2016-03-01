@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 */
             }
         });
-        _pictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
         _pictureInformationFragment.setTitle("사진수");
         _pictureInformationFragment.setValues(20);
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener(){
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
             }};
         _pictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
 
-        _exchangeRatioFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.ExchangeRatioFragment);
         _exchangeRatioFragment.setTitle("교체 주기");
         _exchangeRatioFragment.setValues(30);
         View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener(){
@@ -90,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(Tag, "222222222222222222222222222");
             }};
         _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
-
-        _showImageFragment = (WallpaperFragment) getFragmentManager().findFragmentById(R.id.ShowImageFragment);
-
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
