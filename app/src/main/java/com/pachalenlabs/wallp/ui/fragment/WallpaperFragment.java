@@ -3,7 +3,6 @@ package com.pachalenlabs.wallp.ui.fragment;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,10 +59,10 @@ public class WallpaperFragment extends Fragment{
 
     @AfterViews
     void setupViews(){
-        //********************만약 사이즈 조절이 필요하다면****************
+        /********************만약 사이즈 조절이 필요하다면***************
         BitmapFactory.Options resizeOptions = new BitmapFactory.Options();
         resizeOptions.inSampleSize = 10;
-        //**********************************************************/
+        **********************************************************/
         _config = new ImageLoaderConfiguration.Builder(getActivity())
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
@@ -77,7 +76,7 @@ public class WallpaperFragment extends Fragment{
                 .showImageOnLoading(R.color.colorAccent) // 로딩중 이미지 설정
                 .showImageForEmptyUri(R.color.colorPrimary) // Uri주소가 잘못되었을경우(이미지없을때)
                 .showImageOnFail(R.color.colorPrimaryDark) // 로딩 실패시
-                .decodingOptions(resizeOptions)
+               // .decodingOptions(resizeOptions)
                 .resetViewBeforeLoading(false)  // 로딩전에 뷰를 리셋하는건데 false로 하세요 과부하!
                 .cacheInMemory(false) // 메모리케시 사용여부
                 .considerExifParams(false) // 사진이미지의 회전률 고려할건지
