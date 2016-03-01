@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.pachalenlabs.wallp.R;
@@ -27,7 +26,6 @@ import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
-import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
     @FragmentById(R.id.ShowImageFragment)
     WallpaperFragment _showImageFragment;
 
-    @ViewById(R.id.show_selected_photo_imageView)
-    ImageView _selectedImageView;
     String _imageFilePath;
     String Tag= "MainActivity";
 
@@ -103,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == PICK_PICTURE){
             if(resultCode == Activity.RESULT_OK){
                 Uri uri = data.getData();
-                _selectedImageView.setImageURI(uri);
                 _imageFilePath = getImagePath(uri);
                 copyFile(_imageFilePath);
                 _showImageFragment.setImageView(_imageFilePath);
+                setBackGround(_imageFilePath);
             }
         }
     }
