@@ -61,11 +61,14 @@ public class WPCore {
     public void loadData(){
         String jsonData = ReadTextFile(FILE_NAME);
         Gson gson = new Gson();
+        if("".equals(jsonData)){
+
+        }
         appData = gson.fromJson(jsonData, WPData.class);
     }
 
     public String ReadTextFile(String strFileName) {
-        String read_text = null;
+        String read_text = "";
         try {
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WallP/" + strFileName);
             FileInputStream fis = new FileInputStream(file);
@@ -118,9 +121,10 @@ public class WPCore {
 
     private class WPData{
         ArrayList<String> wallpaperUris;
-
+        int timeGap; // Miniute
         public WPData(){
             wallpaperUris = new ArrayList<String>();
+            timeGap = 0;
         }
     }
 }
