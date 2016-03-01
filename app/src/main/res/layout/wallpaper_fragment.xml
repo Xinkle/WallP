@@ -1,10 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.activity.MainActivity"
+    >
+
 <com.ssomai.android.scalablelayout.ScalableLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_above="@+id/main_textview"
     android:background="#1d1d1d"
     sl:scale_base_width="400"
-    sl:scale_base_height="200"
+    sl:scale_base_height="400"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sl="http://schemas.android.com/apk/res-auto">
 
@@ -27,27 +38,29 @@
         android:layout_height="wrap_content"
         android:id="@+id/left_imageButton"
         android:scaleType="center"
-        sl:scale_left="90"
-        sl:scale_top="60"
+        sl:scale_left="65"
+        sl:scale_top="50"
         sl:scale_width="50"
-        sl:scale_height="90"/>
+        sl:scale_height="300"/>
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/right_imageButton"
         android:scaleType="center"
-        sl:scale_left="265"
-        sl:scale_top="60"
+        sl:scale_left="285"
+        sl:scale_top="50"
         sl:scale_width="50"
-        sl:scale_height="90" />
+        sl:scale_height="300" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/cancel_imageButton"
-        sl:scale_left="265"
+        sl:scale_left="285"
         sl:scale_top="10"
         sl:scale_width="50"
-        sl:scale_height="50"/>
+        sl:scale_height="50"
+        android:background="@drawable/abc_ic_clear_mtrl_alpha" />
 </com.ssomai.android.scalablelayout.ScalableLayout>
+</LinearLayout>
