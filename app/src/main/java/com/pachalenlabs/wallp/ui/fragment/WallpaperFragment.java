@@ -1,8 +1,10 @@
 package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.pachalenlabs.wallp.R;
 
 import org.androidannotations.annotations.AfterViews;
@@ -52,11 +59,75 @@ public class WallpaperFragment extends Fragment{
 
     @AfterViews
     void setupViews(){
+
+        BitmapFactory.Options resizeOptions = new BitmapFactory.Options();
+        resizeOptions.inSampleSize = 10;
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity())
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .writeDebugLogs() // Remove for release app
+                .build();
+
+        ImageLoader.getInstance().init(config);
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.color.colorAccent) // 로딩중 이미지 설정
+                .showImageForEmptyUri(R.color.colorPrimary) // Uri주소가 잘못되었을경우(이미지없을때)
+                .showImageOnFail(R.color.colorPrimaryDark) // 로딩 실패시
+                .decodingOptions(resizeOptions)
+                .resetViewBeforeLoading(false)  // 로딩전에 뷰를 리셋하는건데 false로 하세요 과부하!
+                .cacheInMemory(false) // 메모리케시 사용여부
+                .considerExifParams(false) // 사진이미지의 회전률 고려할건지
+                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2) // 스케일타입설정
+                .bitmapConfig(Bitmap.Config.RGB_565) // 이미지 컬러방식
+                .build();
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage("drawable://"+R.drawable.test_wallpaper ,  _selectedPhotoImageView , options);
+
+        /*
+        BitmapFactory.Options resizeOptions = new BitmapFactory.Options();
+        resizeOptions.inSampleSize = 10;
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity())
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .build();
+        ImageLoader.getInstance().init(config);
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.test_wallpaper) // 로딩중 이미지 설정
+                .showImageForEmptyUri(R.color.colorAccent) // Uri주소가 잘못되었을경우(이미지없을때)
+                .showImageOnFail(R.color.colorPrimary) // 로딩 실패시
+                .resetViewBeforeLoading(false)  // 로딩전에 뷰를 리셋
+                .cacheInMemory(false) // 메모리케시 사용여부
+                .considerExifParams(false) // 사진이미지의 회전률 고려할건지
+                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2) // 스케일타입설정
+                .decodingOptions(resizeOptions)
+                .bitmapConfig(Bitmap.Config.ARGB_8888) // 이미지 컬러방식
+                .build();
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        //Log.d(Tag,"@@@@@@"+getActivity().getApplicationContext().getPackageName());
+        imageLoader.displayImage("android.resource://com.pachalenlabs.wallp/"+R.drawable.test_wallpaper,_selectedPhotoImageView, options);*/
+    }
+
+    public void setImageView(String imagePath){
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 10;
-        Bitmap bitmapImage = BitmapFactory.decodeResource(getResources(),R.drawable.test_wallpaper,options);
-        Bitmap resized = Bitmap.createScaledBitmap( bitmapImage,500,700, true );
-        _selectedPhotoImageView.setImageBitmap(resized);
+        Bitmap bitmapImage = BitmapFactory.decodeFile(imagePath,options);
+        _selectedPhotoImageView.setImageBitmap(bitmapImage);
+    }
+
+    public Uri resourceToUri (int resID) {
+        Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                "://" + getResources().getResourcePackageName(resID)
+                + '/' + getResources().getResourceTypeName(resID) + '/' +
+                getResources().getResourceEntryName(resID));
+        return  imageUri;
     }
     public void setImageView(String imagePath){
         BitmapFactory.Options options = new BitmapFactory.Options();
