@@ -18,15 +18,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
+import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
-import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,12 +37,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static final int  PICK_PICTURE  = 1;
+
     @FragmentById(R.id.PictureInformationFragment)
     InformationFragment _pictureInformationFragment;
     @FragmentById(R.id.ExchangeRatioFragment)
     InformationFragment _exchangeRatioFragment;
-    @ViewById(R.id.show_selected_photo_imageView)
-    ImageView _selectedImageView;
+    @FragmentById(R.id.ShowImageFragment)
+    WallpaperFragment _showImageFragment;
+
     String _imageFilePath;
     String Tag= "MainActivity";
 
@@ -70,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 */
             }
         });
-        _pictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.PictureInformationFragment);
         _pictureInformationFragment.setTitle("사진수");
         _pictureInformationFragment.setValues(20);
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener(){
@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
             }};
         _pictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
 
-        _exchangeRatioFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.ExchangeRatioFragment);
         _exchangeRatioFragment.setTitle("교체 주기");
         _exchangeRatioFragment.setValues(30);
         View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener(){
@@ -95,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == PICK_PICTURE){
             if(resultCode == Activity.RESULT_OK){
                 Uri uri = data.getData();
-                _selectedImageView.setImageURI(uri);
                 _imageFilePath = getImagePath(uri);
                 copyFile(_imageFilePath);
+                _showImageFragment.setImageView(_imageFilePath);
                 setBackGround(_imageFilePath);
             }
         }

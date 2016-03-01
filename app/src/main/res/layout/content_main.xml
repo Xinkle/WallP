@@ -13,9 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.pachalenlabs.wallp.ui.fragment.WallpaperFragment_"
-        android:id="@+id/fragment"
+        android:id="@+id/ShowImageFragment"
         tools:layout="@layout/fragment_wallpaper" />
-
 
     <fragment
         android:layout_width="match_parent"
