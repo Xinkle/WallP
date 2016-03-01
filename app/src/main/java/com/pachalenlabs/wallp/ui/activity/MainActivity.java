@@ -2,6 +2,7 @@ package com.pachalenlabs.wallp.ui.activity;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,12 +13,15 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -42,8 +46,11 @@ public class MainActivity extends AppCompatActivity {
     InformationFragment _pictureInformationFragment;
     @FragmentById(R.id.ExchangeRatioFragment)
     InformationFragment _exchangeRatioFragment;
+
     @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedImageView;
+
+
     String _imageFilePath;
     String Tag= "MainActivity";
 
@@ -86,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Log.d(Tag, "222222222222222222222222222");
+                showInputDialog();
             }};
         _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
     }
@@ -155,6 +162,31 @@ public class MainActivity extends AppCompatActivity {
         moveTaskToBack(true);
         finish();
         android.os.Process.killProcess(android.os.Process.myPid());
+    }
+    //***************************dialog**********************************************************
+     void showInputDialog() {
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.input_time_dialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setView(promptView);
+
+        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        _exchangeRatioFragment.setValues(Integer.parseInt(editText.getText().toString()));
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
     @Override
