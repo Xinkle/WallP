@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -23,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
 import android.widget.Toast;
 
 import com.pachalenlabs.wallp.R;
@@ -104,13 +104,34 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 Uri uri = data.getData();
                 _imageFilePath = getImagePath(uri);
-                copyFile(_imageFilePath);
-                _showImageFragment.setImageView(_imageFilePath);
+                BackgroundTask copyImageFIleThread = new BackgroundTask();
                 setBackGround(_imageFilePath);
+                copyImageFIleThread.execute(_imageFilePath);
+
             }
         }
     }
-    //**************************파일 복사를 위한 메소드*************************************************
+    //***************************AsyncTask*******************************************
+    class BackgroundTask extends AsyncTask<String, Integer, String> {
+        protected void onPreExecute() {_showImageFragment.setLodingImageView();} //이미지를 일단 임시로 넣어
+        protected String doInBackground(String... imagePath) {
+            String fileUrl;
+            try {
+                String fileName = new File(imagePath[0]).getName();
+                File sd = Environment.getExternalStorageDirectory();
+                fileUrl = sd.getAbsolutePath()+"/WallP/"+fileName;
+                copyFile(imagePath[0]); //파일을 복사해주기위한 메소드 호출
+                return fileUrl;//복사된 경로를 리턴해줌으로써 onPostExecute에서 imageView에 올라감
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return "실패";
+            }
+        }
+        protected void onProgressUpdate(Integer... values) {}
+        protected void onPostExecute(String result) {_showImageFragment.setImageView(result);}
+        protected void onCancelled() {}
+    }
+        //**************************파일 복사를 위한 메소드*************************************************
     public String getImagePath(Uri uri){
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
@@ -145,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
     //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
     public void setBackGround(String imagePath){
         //바탕화면 관리자 호출
