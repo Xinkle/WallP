@@ -29,7 +29,7 @@ public class WPLogger {
 
         configurator.setFileName(logPath);
         configurator.setFilePattern("%d - [%p::%C] - %m%n");     // log pattern
-        configurator.setMaxFileSize(1024 * 1024);                 // file size(byte)
+        configurator.setMaxFileSize(4 * 1024 * 1024);                 // file size(byte)
         configurator.setMaxBackupSize(10);                        // number of backup file
 
         configurator.setRootLevel(Level.DEBUG);                  // set log level

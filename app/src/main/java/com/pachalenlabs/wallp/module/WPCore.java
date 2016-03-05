@@ -4,8 +4,11 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 
 import com.google.gson.Gson;
+
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,13 +26,15 @@ import java.util.ArrayList;
  * Created by Niklane on 2016-01-14.
  */
 public class WPCore {
-    //Singleton Instance
+    // Logger
+    private final Logger logger = Logger.getLogger(WPCore.class);
+    // Singleton Instance
     private static WPCore ourInstance = new WPCore();
-    //Notification
+    // Notification
     private static Notification WPNotification;
-    //Notification Key
+    // Notification Key
     public static final int NOTIFICATION_KEY = 28913;
-    //Notimanager
+    // Notimanager
     private static NotificationManager notiManager;
     public static void setNotiManager(NotificationManager notiManager) {
         WPCore.notiManager = notiManager;
@@ -37,36 +42,52 @@ public class WPCore {
     public static NotificationManager getNotiManager() {
         return notiManager;
     }
-    //App Data
+    // App Data
     private WPData appData;
-    //Datafile Name
+    // Datafile Name
     private static final String FILE_NAME = "WallP_Data.json";
     public static WPCore getInstance() {
         return ourInstance;
     }
 
+    /**
+     * intialize Core
+     */
     private WPCore() {
-        appData = new WPData();
-        appData.wallpaperUris.add("Sample");
-        saveData();
+        logger.info("Core Created!");
         loadData();
     }
 
+    /**
+     * save data to json
+     */
     public void saveData(){
         Gson gson = new Gson();
         String jsonData = gson.toJson(appData);
         WriteTextFile(FILE_NAME, jsonData);
     }
 
+    /**
+     * load data from json file
+     */
     public void loadData(){
+        appData = new WPData();
         String jsonData = ReadTextFile(FILE_NAME);
         Gson gson = new Gson();
         if("".equals(jsonData)){
-
+            logger.info("File Unavailable");
         }
-        appData = gson.fromJson(jsonData, WPData.class);
+        else {
+            logger.info("File Loaded");
+            appData = gson.fromJson(jsonData, WPData.class);
+        }
     }
 
+    /**
+     * read text file by stream
+     * @param strFileName filename
+     * @return text of file
+     */
     public String ReadTextFile(String strFileName) {
         String read_text = "";
         try {
@@ -80,12 +101,17 @@ public class WPCore {
 
             read_text = new String(buffer);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.toString());
         }
-
         return read_text;
     }
 
+    /**
+     * write text to jsonfile
+     * @param strFileName filename
+     * @param strBuf string to write
+     * @return write sucess or not
+     */
     public boolean WriteTextFile(String strFileName, String strBuf) {
         try {
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WallP/" + strFileName);
@@ -94,37 +120,24 @@ public class WPCore {
             out.write(strBuf);
             out.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error(e.toString());
+            return false;
         }
-
         return true;
     }
 
-    public static boolean copyFile(String sourceLocation) {
-        try {
-            String fileName = new File(sourceLocation).getName();
-            File sd = Environment.getExternalStorageDirectory();
-            if(sd.canWrite()){
-                FileInputStream fis = new FileInputStream(sourceLocation);
-                FileOutputStream fos = new FileOutputStream(sd.getAbsolutePath()+"/WallP/"+fileName);
-                int data = 0;
-                while((data=fis.read())!=-1) fos.write(data);
-                fis.close();
-                fos.close();
-            }
-            return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-    }
-
+    /**
+     * Data Class
+     */
     private class WPData{
+        // List of Wallpaper
         ArrayList<String> wallpaperUris;
-        int timeGap; // Miniute
+        // Timegap(Miniute)
+        int timeGap;
         public WPData(){
+            logger.info("File Initialized");
             wallpaperUris = new ArrayList<String>();
-            timeGap = 0;
+            timeGap = 10;
         }
     }
 }
