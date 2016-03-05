@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,13 +24,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
 import android.widget.Toast;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
 import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 
@@ -52,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     @FragmentById(R.id.ShowImageFragment)
     WallpaperFragment _showImageFragment;
 
-
-
     String _imageFilePath;
     String Tag= "MainActivity";
 
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent,PICK_PICTURE);
-                Bitmap src = BitmapFactory.decodeResource(getResources(),R.drawable.test_wallpaper);
                 /*
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -104,12 +102,26 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 Uri uri = data.getData();
                 _imageFilePath = getImagePath(uri);
-                copyFile(_imageFilePath);
-                _showImageFragment.setImageView(_imageFilePath);
                 setBackGround(_imageFilePath);
+                _showImageFragment.setLodingImageView();
+                copyInBackground(_imageFilePath);
             }
         }
     }
+    //***************************AsyncTask*******************************************************
+    @Background
+    protected void copyInBackground(String imagePath) {
+        String fileUrl;
+        try {
+            String fileName = new File(imagePath).getName();
+            File sd = Environment.getExternalStorageDirectory();
+            fileUrl = sd.getAbsolutePath()+"/WallP/"+fileName;
+            copyFile(imagePath); //파일을 복사해주기위한 메소드 호출
+            updateImageView(fileUrl);
+        } catch (Exception ex) {ex.printStackTrace();}
+    }
+    @UiThread
+    protected void updateImageView(String result) {_showImageFragment.setImageView(result);}
     //**************************파일 복사를 위한 메소드*************************************************
     public String getImagePath(Uri uri){
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
@@ -145,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
     //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
     public void setBackGround(String imagePath){
         //바탕화면 관리자 호출
@@ -171,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         android.os.Process.killProcess(android.os.Process.myPid());
     }
     //***************************dialog**********************************************************
-     void showInputDialog() {
+    void showInputDialog() {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
         View promptView = layoutInflater.inflate(R.layout.input_time_dialog, null);
