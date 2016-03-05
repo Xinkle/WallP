@@ -18,6 +18,7 @@ import com.pachalenlabs.wallp.R;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.DrawableRes;
 
@@ -30,6 +31,7 @@ public class WallpaperFragment extends Fragment{
 
     String Tag = "WallpaperFragment";
 
+
     @ViewById(R.id.cancel_imageButton)
     ImageButton _cancelImageButton;
     @ViewById(R.id.left_imageButton)
@@ -38,6 +40,7 @@ public class WallpaperFragment extends Fragment{
     ImageButton _rightImageButton;
     @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedPhotoImageView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,12 @@ public class WallpaperFragment extends Fragment{
         Bitmap bitmapImage = BitmapFactory.decodeResource(getResources(),R.drawable.test_wallpaper,options);
         Bitmap resized = Bitmap.createScaledBitmap( bitmapImage,500,700, true );
         _selectedPhotoImageView.setImageBitmap(resized);
+    }
+    public void setImageView(String imagePath){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 10;
+        Bitmap bitmapImage = BitmapFactory.decodeFile(imagePath,options);
+        _selectedPhotoImageView.setImageBitmap(bitmapImage);
     }
 
     public void setImage(Uri imageURI){
