@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent,PICK_PICTURE);
-                Bitmap src = BitmapFactory.decodeResource(getResources(),R.drawable.test_wallpaper);
+                //_wallpaperSwitchFragment.addWallpaper();
                 /*
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 _imageFilePath = getImagePath(uri);
                 copyFile(_imageFilePath);
-                _wallpaperFragment.setImageView(_imageFilePath);
+                _wallpaperSwitchFragment.addWallpaper(uri);
                 setBackGround(_imageFilePath);
             }
         }

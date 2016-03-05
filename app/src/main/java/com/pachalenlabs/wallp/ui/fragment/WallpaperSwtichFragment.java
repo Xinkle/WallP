@@ -21,6 +21,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
+import org.apache.log4j.Logger;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ import java.util.ArrayList;
 
 @EFragment
 public class WallpaperSwtichFragment extends Fragment{
+    //Logger
+    private final Logger logger = Logger.getLogger(WallpaperSwtichFragment.class);
     @ViewById(R.id.wallpaper_scroll_layout)
     LinearLayout _WallpapaerScrollLayout;
 
@@ -53,7 +56,7 @@ public class WallpaperSwtichFragment extends Fragment{
         _WallpaperFragment = (WallpaperFragment)getFragmentManager().findFragmentById(R.id.wallpeper_fragment);
     }
 
-    public void addWallpaper(Uri imgUri){
+    public void addWallpaper(Uri uri){
         ImageView imgView = new ImageView(getActivity());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -68,7 +71,7 @@ public class WallpaperSwtichFragment extends Fragment{
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 10;
-        Bitmap bitmapImage = BitmapFactory.decodeResource(getResources(),R.drawable.test_wallpaper,options);
+        Bitmap bitmapImage = BitmapFactory.decodeResource(getResources(),R.drawable.liver,options);
         Bitmap resized = Bitmap.createScaledBitmap(bitmapImage,500,700, true );
         imgView.setImageBitmap(resized);
 
@@ -79,6 +82,7 @@ public class WallpaperSwtichFragment extends Fragment{
                 _WallpaperFragment.setImage(iv.getDrawable());
             }
         });
+        logger.info("Wallpaper Added!");
         _WallpapaerScrollLayout.addView(imgView);
     }
 
