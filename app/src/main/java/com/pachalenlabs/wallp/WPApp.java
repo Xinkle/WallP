@@ -3,6 +3,7 @@ package com.pachalenlabs.wallp;
 import android.app.Application;
 import android.util.Log;
 
+import com.pachalenlabs.wallp.module.WPCore;
 import com.pachalenlabs.wallp.module.WPLogger;
 
 import org.androidannotations.annotations.EApplication;
@@ -17,6 +18,7 @@ public class WPApp extends Application {
     public void onCreate() {
         super.onCreate();
         setLogger();
+        WPCore.getInstance();
     }
 
     void setLogger(){

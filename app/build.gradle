@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:2.0.0-beta5'
+        classpath 'com.android.tools.build:gradle:2.0.0-beta6'
         // replace with the current version of the android-apt plugin
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
 
@@ -72,6 +72,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
+    compile 'com.google.code.gson:gson:2.6.2'
     // log lib
     compile 'log4j:log4j:1.2.17'
     compile 'de.mindpipe.android:android-logging-log4j:1.0.2@jar'
