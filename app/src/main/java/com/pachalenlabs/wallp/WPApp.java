@@ -19,6 +19,7 @@ public class WPApp extends Application {
         super.onCreate();
         setLogger();
         WPCore.getInstance();
+        WPCore.imageLoaderConfig(this);
     }
 
     void setLogger(){

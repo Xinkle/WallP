@@ -124,7 +124,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ex) {ex.printStackTrace();}
     }
     @UiThread
-    protected void updateImageView(String result) {_wallpaperFragment.setImageView(result);}
+    protected void updateImageView(String result) {
+        _wallpaperFragment.setImageView(result);
+        _wallpaperSwitchFragment.addWallpaper(result);
+    }
     //**************************파일 복사를 위한 메소드*************************************************
     public String getImagePath(Uri uri){
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
