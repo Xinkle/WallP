@@ -2,9 +2,12 @@ package com.pachalenlabs.wallp.module;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
+import android.util.TypedValue;
 
 import com.google.gson.Gson;
 
@@ -139,5 +142,15 @@ public class WPCore {
             wallpaperUris = new ArrayList<String>();
             timeGap = 10;
         }
+    }
+
+    public static int getPixelValue(Context context, int dimenId) {
+        Resources resources = context.getResources();
+        Log.d("WPCORE", "Metric : " + resources.getDisplayMetrics());
+        return new Double(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(dimenId),
+                resources.getDisplayMetrics()
+        )).intValue();
     }
 }

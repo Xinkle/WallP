@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
 import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
+import com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
@@ -49,9 +50,10 @@ public class MainActivity extends AppCompatActivity {
     InformationFragment _pictureInformationFragment;
     @FragmentById(R.id.ExchangeRatioFragment)
     InformationFragment _exchangeRatioFragment;
-
-    @FragmentById(R.id.ShowImageFragment)
-    WallpaperFragment _showImageFragment;
+    @FragmentById(R.id.wallpaper_switch_fragment)
+    WallpaperSwtichFragment _wallpaperSwitchFragment;
+    @FragmentById(R.id.wallpeper_fragment)
+    WallpaperFragment _wallpaperFragment;
 
     String _imageFilePath;
     String Tag= "MainActivity";
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent,PICK_PICTURE);
+                //_wallpaperSwitchFragment.addWallpaper();
                 /*
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 _imageFilePath = getImagePath(uri);
                 setBackGround(_imageFilePath);
-                _showImageFragment.setLodingImageView();
+                _wallpaperFragment.setLodingImageView();
                 copyInBackground(_imageFilePath);
             }
         }
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ex) {ex.printStackTrace();}
     }
     @UiThread
-    protected void updateImageView(String result) {_showImageFragment.setImageView(result);}
+    protected void updateImageView(String result) {_wallpaperFragment.setImageView(result);}
     //**************************파일 복사를 위한 메소드*************************************************
     public String getImagePath(Uri uri){
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);

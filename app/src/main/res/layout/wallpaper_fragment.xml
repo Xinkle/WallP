@@ -28,8 +28,8 @@
         sl:scale_width="175"
         sl:scale_height="250"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         android:id="@+id/show_selected_photo_imageView"
+        android:layout_alignParentBottom="true"
         android:longClickable="true"
         />
 

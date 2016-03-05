@@ -8,24 +8,24 @@
     android:weightSum="10"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.activity.MainActivity"
-    tools:showIn="@layout/activity_act_main"  >
+    tools:showIn="@layout/main_activity_layout">
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:name="com.pachalenlabs.wallp.ui.fragment.WallpaperFragment_"
-        android:id="@+id/ShowImageFragment"
+        android:id="@+id/wallpeper_fragment"
         android:layout_weight="5"
-        tools:layout="@layout/fragment_wallpaper" />
+        tools:layout="@layout/wallpaper_fragment" />
 
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:name="com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment_"
-        android:id="@+id/fragment2"
+        android:id="@+id/wallpaper_switch_fragment"
         android:layout_weight="3"
-        tools:layout="@layout/wallpaper_switch_fragment" />
+        tools:layout="@layout/wallpaper_switch_fragment"/>
 
     <fragment
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
         android:id="@+id/PictureInformationFragment"
         android:layout_weight="1"
-        tools:layout="@layout/fragment_information" />
+        tools:layout="@layout/information_fragment"/>
 
     <fragment
         android:layout_width="match_parent"
@@ -41,5 +41,5 @@
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
         android:id="@+id/ExchangeRatioFragment"
         android:layout_weight="1"
-        tools:layout="@layout/fragment_information" />
+        tools:layout="@layout/information_fragment"/>
 </LinearLayout>
