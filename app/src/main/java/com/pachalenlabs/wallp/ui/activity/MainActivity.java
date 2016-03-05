@@ -8,11 +8,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +30,7 @@ import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
 import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 
@@ -52,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     @FragmentById(R.id.ShowImageFragment)
     WallpaperFragment _showImageFragment;
 
-
-
     String _imageFilePath;
     String Tag= "MainActivity";
 
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent,PICK_PICTURE);
-                Bitmap src = BitmapFactory.decodeResource(getResources(),R.drawable.test_wallpaper);
                 /*
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -104,34 +102,27 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 Uri uri = data.getData();
                 _imageFilePath = getImagePath(uri);
-                BackgroundTask copyImageFIleThread = new BackgroundTask();
                 setBackGround(_imageFilePath);
-                copyImageFIleThread.execute(_imageFilePath);
-
+                _showImageFragment.setLodingImageView();
+                copyInBackground(_imageFilePath);
             }
         }
     }
-    //***************************AsyncTask*******************************************
-    class BackgroundTask extends AsyncTask<String, Integer, String> {
-        protected void onPreExecute() {_showImageFragment.setLodingImageView();} //이미지를 일단 임시로 넣어
-        protected String doInBackground(String... imagePath) {
-            String fileUrl;
-            try {
-                String fileName = new File(imagePath[0]).getName();
-                File sd = Environment.getExternalStorageDirectory();
-                fileUrl = sd.getAbsolutePath()+"/WallP/"+fileName;
-                copyFile(imagePath[0]); //파일을 복사해주기위한 메소드 호출
-                return fileUrl;//복사된 경로를 리턴해줌으로써 onPostExecute에서 imageView에 올라감
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return "실패";
-            }
-        }
-        protected void onProgressUpdate(Integer... values) {}
-        protected void onPostExecute(String result) {_showImageFragment.setImageView(result);}
-        protected void onCancelled() {}
+    //***************************AsyncTask*******************************************************
+    @Background
+    protected void copyInBackground(String imagePath) {
+        String fileUrl;
+        try {
+            String fileName = new File(imagePath).getName();
+            File sd = Environment.getExternalStorageDirectory();
+            fileUrl = sd.getAbsolutePath()+"/WallP/"+fileName;
+            copyFile(imagePath); //파일을 복사해주기위한 메소드 호출
+            updateImageView(fileUrl);
+        } catch (Exception ex) {ex.printStackTrace();}
     }
-        //**************************파일 복사를 위한 메소드*************************************************
+    @UiThread
+    protected void updateImageView(String result) {_showImageFragment.setImageView(result);}
+    //**************************파일 복사를 위한 메소드*************************************************
     public String getImagePath(Uri uri){
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
@@ -193,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         android.os.Process.killProcess(android.os.Process.myPid());
     }
     //***************************dialog**********************************************************
-     void showInputDialog() {
+    void showInputDialog() {
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
         View promptView = layoutInflater.inflate(R.layout.input_time_dialog, null);
