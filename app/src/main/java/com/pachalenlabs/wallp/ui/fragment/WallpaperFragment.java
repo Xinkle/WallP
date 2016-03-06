@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,10 +24,8 @@ import com.pachalenlabs.wallp.R;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.res.DrawableRes;
 
 /**
  * Created by Niklane on 2016-01-15.
@@ -106,7 +103,7 @@ public class WallpaperFragment extends Fragment{
                 .build();
 
         ImageLoader imageLoader = ImageLoader.getInstance();
-        ImageAware imageAware = new ImageViewAware(_selectedPhotoImageView,true); //ImageView속성을 따르기 위해서
+        ImageAware imageAware = new ImageViewAware(_selectedPhotoImageView,false); //ImageView속성을 따르기 위해서
         imageLoader.displayImage("drawable://"+R.drawable.copylodingimage ,imageAware, options);
     }
 
@@ -129,7 +126,7 @@ public class WallpaperFragment extends Fragment{
                 .build();
 
         ImageLoader imageLoader = ImageLoader.getInstance();
-        ImageAware imageAware = new ImageViewAware(_selectedPhotoImageView,true); //ImageView속성을 따르기 위해서
+        ImageAware imageAware = new ImageViewAware(_selectedPhotoImageView,false); //ImageView속성을 따르기 위해서
         imageLoader.displayImage("file://"+imagePath , imageAware , options);
     }
 

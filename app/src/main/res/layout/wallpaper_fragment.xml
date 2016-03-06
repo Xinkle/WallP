@@ -22,7 +22,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         sl:scale_left="115"
         sl:scale_top="10"
         sl:scale_width="175"
