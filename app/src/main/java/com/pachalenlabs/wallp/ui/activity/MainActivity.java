@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 @EActivity
 public class MainActivity extends AppCompatActivity {
@@ -115,16 +116,18 @@ public class MainActivity extends AppCompatActivity {
     @Background
     protected void copyInBackground(String imagePath) {
         String fileUrl;
+        Log.d(Tag,"@@@@복사시작");
         try {
             String fileName = new File(imagePath).getName();
             File sd = Environment.getExternalStorageDirectory();
             fileUrl = sd.getAbsolutePath()+"/WallP/"+fileName;
-            copyFile(imagePath); //파일을 복사해주기위한 메소드 호출
+            copy(imagePath); //파일을 복사해주기위한 메소드 호출
             updateImageView(fileUrl);
         } catch (Exception ex) {ex.printStackTrace();}
     }
     @UiThread
     protected void updateImageView(String result) {
+        Log.d(Tag,"@@@@복사끝");
         _wallpaperFragment.setImageView(result);
         _wallpaperSwitchFragment.addWallpaper(result);
     }
@@ -145,25 +148,19 @@ public class MainActivity extends AppCompatActivity {
 
         return path;
     }
-    public static boolean copyFile(String sourceLocation) {
-        try {
-            String fileName = new File(sourceLocation).getName();
-            File sd = Environment.getExternalStorageDirectory();
-            if(sd.canWrite()){
-                FileInputStream fis = new FileInputStream(sourceLocation);
-                FileOutputStream fos = new FileOutputStream(sd.getAbsolutePath()+"/WallP/"+fileName);
-                int data = 0;
-                while((data=fis.read())!=-1) fos.write(data);
-                fis.close();
-                fos.close();
-            }
-            return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-    }
+    public void copy(String sourceLocation) throws IOException {
 
+        File sd = Environment.getExternalStorageDirectory();
+        String fileName = new File(sourceLocation).getName();
+
+        FileInputStream inStream = new FileInputStream(sourceLocation);
+        FileOutputStream outStream = new FileOutputStream(sd.getAbsolutePath()+"/WallP/"+fileName);
+        FileChannel inChannel = inStream.getChannel();
+        FileChannel outChannel = outStream.getChannel();
+        inChannel.transferTo(0, inChannel.size(), outChannel);
+        inStream.close();
+        outStream.close();
+    }
     //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
     public void setBackGround(String imagePath){
         //바탕화면 관리자 호출
