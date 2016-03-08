@@ -17,7 +17,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -121,7 +120,15 @@ public class MainActivity extends AppCompatActivity {
             String fileName = new File(imagePath).getName();
             File sd = Environment.getExternalStorageDirectory();
             fileUrl = sd.getAbsolutePath()+"/WallP/"+fileName;
-            copy(imagePath); //파일을 복사해주기위한 메소드 호출
+
+            FileInputStream inStream = new FileInputStream(imagePath);
+            FileOutputStream outStream = new FileOutputStream(sd.getAbsolutePath()+"/WallP/"+fileName);
+            FileChannel inChannel = inStream.getChannel();
+            FileChannel outChannel = outStream.getChannel();
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+            inStream.close();
+            outStream.close();
+
             updateImageView(fileUrl);
         } catch (Exception ex) {ex.printStackTrace();}
     }
@@ -148,35 +155,12 @@ public class MainActivity extends AppCompatActivity {
 
         return path;
     }
-    public void copy(String sourceLocation) throws IOException {
-
-        File sd = Environment.getExternalStorageDirectory();
-        String fileName = new File(sourceLocation).getName();
-
-        FileInputStream inStream = new FileInputStream(sourceLocation);
-        FileOutputStream outStream = new FileOutputStream(sd.getAbsolutePath()+"/WallP/"+fileName);
-        FileChannel inChannel = inStream.getChannel();
-        FileChannel outChannel = outStream.getChannel();
-        inChannel.transferTo(0, inChannel.size(), outChannel);
-        inStream.close();
-        outStream.close();
-    }
     //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
     public void setBackGround(String imagePath){
-        //바탕화면 관리자 호출
-        WallpaperManager myWallpaperManager
-                = WallpaperManager.getInstance(getApplicationContext());
-        //화면의 크기를 구함
-        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
+        WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
         Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
-        Bitmap resized = Bitmap.createScaledBitmap( wallPaperImage, width, height, true );
-        try {
-            myWallpaperManager.setBitmap(wallPaperImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        try { myWallpaperManager.setBitmap(wallPaperImage);}
+        catch (IOException e) {  e.printStackTrace(); }
     }
     //**************************뒤로가기 눌려졌을때 ***************************************************
     @Override
