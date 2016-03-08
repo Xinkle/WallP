@@ -4,12 +4,22 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.pachalenlabs.wallp.R;
 
 import org.apache.log4j.Logger;
 
@@ -153,4 +163,39 @@ public class WPCore {
                 resources.getDisplayMetrics()
         )).intValue();
     }
+
+    public static void setImageToView(ImageView imgView, String imgUri){
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.color.colorAccent) // 로딩중 이미지 설정
+                .showImageForEmptyUri(R.color.colorPrimary) // Uri주소가 잘못되었을경우(이미지없을때)
+                .showImageOnFail(R.color.colorPrimaryDark) // 로딩 실패시
+                // .decodingOptions(resizeOptions)
+                .resetViewBeforeLoading(false)  // 로딩전에 뷰를 리셋하는건데 false로 하세요 과부하!
+                .cacheInMemory(false) // 메모리케시 사용여부
+                .considerExifParams(false) // 사진이미지의 회전률 고려할건지
+                .imageScaleType(ImageScaleType.IN_SAMPLE_INT) // 스케일타입설정
+                .bitmapConfig(Bitmap.Config.ARGB_8888) // 이미지 컬러방식
+                .build();
+
+        setImageToView(imgView, imgUri, options);
+    }
+
+    public static void setImageToView(ImageView imgView, String imgUri, DisplayImageOptions imgOptions){
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        ImageAware imageAware = new ImageViewAware(imgView, false); //ImageView속성을 따르기 위해서
+        imageLoader.displayImage(imgUri , imageAware , imgOptions);
+    }
+
+    public static void imageLoaderConfig(Context context){
+        ImageLoaderConfiguration imlConfig;
+        imlConfig = new ImageLoaderConfiguration.Builder(context)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .writeDebugLogs() // Remove for release app
+                .build();
+
+        ImageLoader.getInstance().init(imlConfig);
+    }
+
 }
