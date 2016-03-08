@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,10 +25,8 @@ import com.pachalenlabs.wallp.module.WPCore;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.res.DrawableRes;
 
 /**
  * Created by Niklane on 2016-01-15.
