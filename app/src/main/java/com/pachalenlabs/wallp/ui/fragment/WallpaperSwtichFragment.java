@@ -58,42 +58,30 @@ public class WallpaperSwtichFragment extends Fragment{
     }
 
     @UiThread
-    public void addWallpaper(String filePath){
+    public void addWallpaper(final String filePath){
         ImageView imgView = new ImageView(getActivity());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
+                300,
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0.0F
         );
         int imageMargin = WPCore.getPixelValue(getActivity(), R.dimen.wallpeper_switch_margin);
         Log.d("WallP", "Pixel : " + imageMargin + " Dimen : " + getResources().getDimension(R.dimen.wallpeper_switch_margin));
         params.setMargins(imageMargin,imageMargin,imageMargin,imageMargin);
-        imgView.setScaleType(ImageView.ScaleType.FIT_START);
+        imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         imgView.setLayoutParams(params);
 
-        /*
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 10;
-        Bitmap bitmapImage = BitmapFactory.decodeResource(getResources(),R.drawable.liver,options);
-        Bitmap resized = Bitmap.createScaledBitmap(bitmapImage,500,700, true );
-        imgView.setImageBitmap(resized);
-        */
         WPCore.setImageToView(imgView, "file://" + filePath);
 
         imgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ImageView iv = (ImageView)v;
-                //_WallpaperFragment.setImage(iv.getDrawable());
-                iv.getDrawable().toString();
+                _WallpaperFragment.setImageView(filePath);
             }
         });
         logger.info("Wallpaper Added!");
         _WallpapaerScrollLayout.addView(imgView);
-    }
-
-    private void setImageToWallpaperFragment(Uri imageUri){
-        //_WallpaperFragment.setImage(imageUri);
     }
 
 }
