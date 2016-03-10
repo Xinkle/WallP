@@ -15,12 +15,6 @@
 
         <activity android:name=".ui.activity.MainActivity_"
             android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".ui.activity.LogoActivity_"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
