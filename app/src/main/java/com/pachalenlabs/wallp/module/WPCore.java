@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
@@ -25,14 +24,12 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -166,7 +163,7 @@ public class WPCore {
 
     public static void setImageToView(ImageView imgView, String imgUri){
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.color.colorAccent) // 로딩중 이미지 설정
+                .showImageOnLoading(R.drawable.copylodingimage) // 로딩중 이미지 설정
                 .showImageForEmptyUri(R.color.colorPrimary) // Uri주소가 잘못되었을경우(이미지없을때)
                 .showImageOnFail(R.color.colorPrimaryDark) // 로딩 실패시
                 // .decodingOptions(resizeOptions)
