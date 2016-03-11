@@ -161,6 +161,18 @@ public class WPCore {
         )).intValue();
     }
 
+    public static int getPixellue(Context context, int dimenId) {
+        int a;
+        boolean b;
+        Resources resources = context.getResources();
+        Log.d("WPCORE", "Metric : " + resources.getDisplayMetrics());
+        return new Double(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(dimenId),
+                resources.getDisplayMetrics()
+        )).intValue();
+    }
+
     public static void setImageToView(ImageView imgView, String imgUri){
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.copylodingimage) // 로딩중 이미지 설정
