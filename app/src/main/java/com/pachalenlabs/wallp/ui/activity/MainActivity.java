@@ -24,9 +24,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.pachalenlabs.wallp.R;
+import com.pachalenlabs.wallp.module.WPCore;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
 import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
 import com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment;
@@ -44,18 +44,16 @@ import java.nio.channels.FileChannel;
 @SuppressLint("Registered")
 @EActivity
 public class MainActivity extends AppCompatActivity {
-
-
     public static final int PICK_PICTURE = 1;
 
     @FragmentById(R.id.PictureInformationFragment)
-    InformationFragment _pictureInformationFragment;
-    @FragmentById(R.id.ExchangeRatioFragment)
-    InformationFragment _exchangeRatioFragment;
+    InformationFragment mPictureInformationFragment;
+    @FragmentById(R.id.IntervalFragment)
+    InformationFragment mIntervalFragment;
     @FragmentById(R.id.wallpaper_switch_fragment)
-    WallpaperSwtichFragment _wallpaperSwitchFragment;
+    WallpaperSwtichFragment mWallpaperSwitchFragment;
     @FragmentById(R.id.wallpeper_fragment)
-    WallpaperFragment _wallpaperFragment;
+    WallpaperFragment mWallpaperFragment;
 
     String _imageFilePath;
     String Tag = "MainActivity";
@@ -71,37 +69,31 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplication(), "dd", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, PICK_PICTURE);
-                //_wallpaperSwitchFragment.addWallpaper();
-                /*
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                */
             }
         });
-        _pictureInformationFragment.setTitle("사진수");
-        _pictureInformationFragment.setValues(20);
+        mPictureInformationFragment.setDescription(getResources().getString(R.string.picture_information));
+        mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperUris().size());
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(Tag, "11");
+
             }
         };
-        _pictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
+        mPictureInformationFragment.setClickListenerToLayout(PictureOnInformationButtonClick);
 
-        _exchangeRatioFragment.setTitle("교체 주기");
-        _exchangeRatioFragment.setValues(30);
+        mIntervalFragment.setDescription(getResources().getString(R.string.interval_information));
+        mIntervalFragment.setValue(WPCore.getAppData().getTimeGap());
         View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showInputDialog();
             }
         };
-        _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
+        mIntervalFragment.setClickListenerToLayout(ExchangeOnInformationButtonClick);
     }
 
     @Override
@@ -111,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 _imageFilePath = getImagePath(uri);
                 setBackGround(_imageFilePath);
-                _wallpaperFragment.setLodingImageView();
+                mWallpaperFragment.setLodingImageView();
                 copyInBackground(_imageFilePath);
             }
         }
@@ -144,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
     @UiThread
     protected void updateImageView(String result) {
         Log.d(Tag, "@@@@복사끝");
-        _wallpaperFragment.setImageView(result);
-        _wallpaperSwitchFragment.addWallpaper(result);
+        mWallpaperFragment.setImageView(result);
+        mWallpaperSwitchFragment.addWallpaper(result);
     }
 
     //**************************파일 복사를 위한 메소드*************************************************
@@ -188,18 +180,19 @@ public class MainActivity extends AppCompatActivity {
 
     //***************************dialog**********************************************************
     void showInputDialog() {
-        // get prompts.xml view
+        // Set Custom View for dialog
         LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-        View promptView = layoutInflater.inflate(R.layout.input_time_dialog, null);
+        View promptView = layoutInflater.inflate(R.layout.input_interval_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
         alertDialogBuilder.setView(promptView);
 
-        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        final EditText intervalText = (EditText) promptView.findViewById(R.id.edittext);
+
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        _exchangeRatioFragment.setValues(Integer.parseInt(editText.getText().toString()));
+                        WPCore.getAppData().setTimeGap(Integer.parseInt(intervalText.getText().toString()));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

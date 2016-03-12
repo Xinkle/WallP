@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
-        android:id="@+id/ExchangeRatioFragment"
+        android:id="@+id/IntervalFragment"
         android:layout_weight="1"
         tools:layout="@layout/information_fragment"/>
 </LinearLayout>

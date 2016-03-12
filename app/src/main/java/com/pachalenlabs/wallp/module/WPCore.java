@@ -3,12 +3,14 @@ package com.pachalenlabs.wallp.module;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -40,7 +42,12 @@ public class WPCore {
     // Singleton Instance
     private static WPCore ourInstance = new WPCore();
     // App Data
-    private WPData appData;
+    private static WPData appData;
+
+    public static WPData getAppData() {
+        return ourInstance.appData;
+    }
+
     // Datafile Name
     private static final String FILE_NAME = "WallP_Data.json";
 
@@ -53,13 +60,13 @@ public class WPCore {
      */
     private WPCore() {
         logger.info("Core Created!");
-        loadData();
     }
 
     /**
      * save data to json
      */
     public void saveData() {
+        logger.debug("Time : " + ourInstance.appData.getTimeGap() + " Count : " + ourInstance.appData.getWallpaperUris().size());
         Gson gson = new Gson();
         String jsonData = gson.toJson(appData);
         WriteTextFile(FILE_NAME, jsonData);
@@ -69,14 +76,22 @@ public class WPCore {
      * load data from json file
      */
     public void loadData() {
-        appData = new WPData();
         String jsonData = ReadTextFile(FILE_NAME);
         Gson gson = new Gson();
         if ("".equals(jsonData)) {
-            logger.info("File Unavailable");
+            logger.error("File Unavailable");
+            appData = new WPData();
+            logger.debug("Time : " + appData.getTimeGap() + " Count : " + appData.getWallpaperUris().size());
+            saveData();
         } else {
             logger.info("File Loaded");
-            appData = gson.fromJson(jsonData, WPData.class);
+            try {
+                appData = gson.fromJson(jsonData, WPData.class);
+            }catch(JsonSyntaxException e){
+                logger.error("File Syntax Corrupted!");
+                appData = new WPData();
+                saveData();
+            }
         }
     }
 
@@ -101,6 +116,7 @@ public class WPCore {
         } catch (IOException e) {
             logger.error(e.toString());
         }
+        logger.debug(read_text);
         return read_text;
     }
 
@@ -113,6 +129,7 @@ public class WPCore {
      */
     public boolean WriteTextFile(String strFileName, String strBuf) {
         try {
+            logger.debug("Write : " + strBuf);
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WallP/" + strFileName);
             FileOutputStream fos = new FileOutputStream(file);
             Writer out = new OutputStreamWriter(fos, "UTF-8");
@@ -123,22 +140,6 @@ public class WPCore {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Data Class
-     */
-    private class WPData {
-        // List of Wallpaper
-        ArrayList<String> wallpaperUris;
-        // Timegap(Miniute)
-        int timeGap;
-
-        public WPData() {
-            logger.info("File Initialized");
-            wallpaperUris = new ArrayList<>();
-            timeGap = 10;
-        }
     }
 
     public static int getPixelValue(Context context, int dimenId) {
@@ -185,4 +186,36 @@ public class WPCore {
         ImageLoader.getInstance().init(imlConfig);
     }
 
+    /**
+     * Data Class
+     */
+    public class WPData {
+        // List of Wallpaper
+        public ArrayList<Uri> wallpaperUris;
+
+        public ArrayList<Uri> getWallpaperUris() {
+            return wallpaperUris;
+        }
+
+        public void addWallpaperUri(Uri wallpaperUri) {
+            wallpaperUris.add(wallpaperUri);
+        }
+
+        // Timegap(Miniute)
+        public int timeGap;
+
+        public int getTimeGap() {
+            return timeGap;
+        }
+
+        public void setTimeGap(int timeGap) {
+            this.timeGap = timeGap;
+        }
+
+        public WPData() {
+            logger.info("File Initialized");
+            wallpaperUris = new ArrayList<>();
+            timeGap = 10;
+        }
+    }
 }
