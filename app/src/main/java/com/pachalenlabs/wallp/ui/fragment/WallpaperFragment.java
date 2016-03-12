@@ -29,11 +29,11 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 /**
+ * WallpaperFragment for WallP
  * Created by Niklane on 2016-01-15.
  */
-
 @EFragment
-public class WallpaperFragment extends Fragment{
+public class WallpaperFragment extends Fragment {
 
     String Tag = "WallpaperFragment";
 
@@ -51,6 +51,7 @@ public class WallpaperFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,33 +60,31 @@ public class WallpaperFragment extends Fragment{
     }
 
     @AfterViews
-    public void setupViews(){
-        WPCore.setImageToView(_selectedPhotoImageView, "drawable://"+R.drawable.test_wallpaper);
+    public void setupViews() {
+        WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.test_wallpaper);
     }
-    public void setLodingImageView(){
-        WPCore.setImageToView(_selectedPhotoImageView, "drawable://"+R.drawable.copylodingimage);
+
+    public void setLodingImageView() {
+        WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.copylodingimage);
     }
 
     @UiThread
-    public void setImageView(String imagePath){
+    public void setImageView(String imagePath) {
         WPCore.setImageToView(_selectedPhotoImageView, "file://" + imagePath);
     }
 
-    public Uri resourceToUri (int resID) {
-        Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
-                "://" + getResources().getResourcePackageName(resID)
-                + '/' + getResources().getResourceTypeName(resID) + '/' +
-                getResources().getResourceEntryName(resID));
-        return  imageUri;
-    }
     @Click(R.id.cancel_imageButton)
-    void leftViewClicked() { Log.d(Tag,"1"); }
-    @Click(R.id.right_imageButton)
-    void cancelClicked(){
-        Log.d(Tag,"2");
+    void leftViewClicked() {
+        Log.d(Tag, "1");
     }
+
+    @Click(R.id.right_imageButton)
+    void cancelClicked() {
+        Log.d(Tag, "2");
+    }
+
     @Click(R.id.left_imageButton)
-    void rightViewClicked(){
-        Log.d(Tag,"3");
+    void rightViewClicked() {
+        Log.d(Tag, "3");
     }
 }

@@ -1,7 +1,5 @@
 package com.pachalenlabs.wallp.module;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -33,6 +31,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 
 /**
+ * BootupReceiver for WallP
  * Created by Niklane on 2016-01-14.
  */
 public class WPCore {
@@ -40,22 +39,11 @@ public class WPCore {
     private final Logger logger = Logger.getLogger(WPCore.class);
     // Singleton Instance
     private static WPCore ourInstance = new WPCore();
-    // Notification
-    private static Notification WPNotification;
-    // Notification Key
-    public static final int NOTIFICATION_KEY = 28913;
-    // Notimanager
-    private static NotificationManager notiManager;
-    public static void setNotiManager(NotificationManager notiManager) {
-        WPCore.notiManager = notiManager;
-    }
-    public static NotificationManager getNotiManager() {
-        return notiManager;
-    }
     // App Data
     private WPData appData;
     // Datafile Name
     private static final String FILE_NAME = "WallP_Data.json";
+
     public static WPCore getInstance() {
         return ourInstance;
     }
@@ -71,7 +59,7 @@ public class WPCore {
     /**
      * save data to json
      */
-    public void saveData(){
+    public void saveData() {
         Gson gson = new Gson();
         String jsonData = gson.toJson(appData);
         WriteTextFile(FILE_NAME, jsonData);
@@ -80,14 +68,13 @@ public class WPCore {
     /**
      * load data from json file
      */
-    public void loadData(){
+    public void loadData() {
         appData = new WPData();
         String jsonData = ReadTextFile(FILE_NAME);
         Gson gson = new Gson();
-        if("".equals(jsonData)){
+        if ("".equals(jsonData)) {
             logger.info("File Unavailable");
-        }
-        else {
+        } else {
             logger.info("File Loaded");
             appData = gson.fromJson(jsonData, WPData.class);
         }
@@ -95,6 +82,7 @@ public class WPCore {
 
     /**
      * read text file by stream
+     *
      * @param strFileName filename
      * @return text of file
      */
@@ -118,8 +106,9 @@ public class WPCore {
 
     /**
      * write text to jsonfile
+     *
      * @param strFileName filename
-     * @param strBuf string to write
+     * @param strBuf      string to write
      * @return write sucess or not
      */
     public boolean WriteTextFile(String strFileName, String strBuf) {
@@ -139,14 +128,15 @@ public class WPCore {
     /**
      * Data Class
      */
-    private class WPData{
+    private class WPData {
         // List of Wallpaper
         ArrayList<String> wallpaperUris;
         // Timegap(Miniute)
         int timeGap;
-        public WPData(){
+
+        public WPData() {
             logger.info("File Initialized");
-            wallpaperUris = new ArrayList<String>();
+            wallpaperUris = new ArrayList<>();
             timeGap = 10;
         }
     }
@@ -154,14 +144,14 @@ public class WPCore {
     public static int getPixelValue(Context context, int dimenId) {
         Resources resources = context.getResources();
         Log.d("WPCORE", "Metric : " + resources.getDisplayMetrics());
-        return new Double(TypedValue.applyDimension(
+        return Double.valueOf(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(dimenId),
-                resources.getDisplayMetrics()
-        )).intValue();
+                resources.getDisplayMetrics()))
+                .intValue();
     }
 
-    public static void setImageToView(ImageView imgView, String imgUri){
+    public static void setImageToView(ImageView imgView, String imgUri) {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.copylodingimage) // 로딩중 이미지 설정
                 .showImageForEmptyUri(R.color.colorPrimary) // Uri주소가 잘못되었을경우(이미지없을때)
@@ -177,13 +167,13 @@ public class WPCore {
         setImageToView(imgView, imgUri, options);
     }
 
-    public static void setImageToView(ImageView imgView, String imgUri, DisplayImageOptions imgOptions){
+    public static void setImageToView(ImageView imgView, String imgUri, DisplayImageOptions imgOptions) {
         ImageLoader imageLoader = ImageLoader.getInstance();
         ImageAware imageAware = new ImageViewAware(imgView, false); //ImageView속성을 따르기 위해서
-        imageLoader.displayImage(imgUri , imageAware , imgOptions);
+        imageLoader.displayImage(imgUri, imageAware, imgOptions);
     }
 
-    public static void imageLoaderConfig(Context context){
+    public static void imageLoaderConfig(Context context) {
         ImageLoaderConfiguration imlConfig;
         imlConfig = new ImageLoaderConfiguration.Builder(context)
                 .threadPriority(Thread.NORM_PRIORITY - 2)

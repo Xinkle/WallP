@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#010000"
-    android:weightSum="10"
-    android:onClick="InformationIconClicked">
+    android:weightSum="10">
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,5 +29,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/information_icon_imageButton"
         android:background="@android:drawable/ic_dialog_info"
-        android:layout_gravity="right"></ImageButton>
+        android:layout_gravity="end"/>
 </LinearLayout>
