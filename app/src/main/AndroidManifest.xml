@@ -3,7 +3,8 @@
     package="com.pachalenlabs.wallp">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -23,11 +24,22 @@
         </activity>
 
         <service
-            android:name=".module.WPService_">
+            android:name=".module.WPService_"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.pachalenlabs.wallp.module.WPService"/>
             </intent-filter>
         </service>
+
+        <receiver
+            android:name=".module.WPBootUpReceiver"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

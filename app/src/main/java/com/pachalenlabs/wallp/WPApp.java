@@ -1,5 +1,6 @@
 package com.pachalenlabs.wallp;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.util.Log;
 
@@ -10,26 +11,20 @@ import org.androidannotations.annotations.EApplication;
 import org.apache.log4j.Logger;
 
 /**
+ * Application class for WallP
  * Created by Niklane on 2016-01-12.
  */
+@SuppressLint("Registered")
 @EApplication
 public class WPApp extends Application {
+    private final Logger logger = Logger.getLogger(WPApp.class);
+
     @Override
     public void onCreate() {
         super.onCreate();
-        setLogger();
+        WPLogger.configure(getApplicationContext());
         WPCore.getInstance();
         WPCore.imageLoaderConfig(this);
-    }
-
-    void setLogger(){
-        try {
-            WPLogger.configure(getApplicationContext());
-
-            Logger logger = Logger.getLogger(WPApp_.class);
-            logger.info("Initialize Logger");
-        } catch (Exception e) {
-            Log.e("android-log4j", e.getMessage());
-        }
+        logger.info("App Initialized!!");
     }
 }
