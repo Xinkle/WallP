@@ -44,7 +44,7 @@ import java.nio.channels.FileChannel;
 public class MainActivity extends AppCompatActivity {
 
 
-    public static final int  PICK_PICTURE  = 1;
+    public static final int PICK_PICTURE = 1;
 
     @FragmentById(R.id.PictureInformationFragment)
     InformationFragment _pictureInformationFragment;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     WallpaperFragment _wallpaperFragment;
 
     String _imageFilePath;
-    String Tag= "MainActivity";
+    String Tag = "MainActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,11 +69,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplication(),"dd", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(), "dd", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent,PICK_PICTURE);
+                startActivityForResult(intent, PICK_PICTURE);
                 //_wallpaperSwitchFragment.addWallpaper();
                 /*
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -83,26 +83,29 @@ public class MainActivity extends AppCompatActivity {
         });
         _pictureInformationFragment.setTitle("사진수");
         _pictureInformationFragment.setValues(20);
-        View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener(){
+        View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(Tag, "11");
-            }};
+            }
+        };
         _pictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
 
         _exchangeRatioFragment.setTitle("교체 주기");
         _exchangeRatioFragment.setValues(30);
-        View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener(){
+        View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showInputDialog();
-            }};
+            }
+        };
         _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == PICK_PICTURE){
-            if(resultCode == Activity.RESULT_OK){
+        if (requestCode == PICK_PICTURE) {
+            if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getData();
                 _imageFilePath = getImagePath(uri);
                 setBackGround(_imageFilePath);
@@ -111,39 +114,41 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     //***************************AsyncTask*******************************************************
     @Background
     protected void copyInBackground(String imagePath) {
         String fileUrl;
-        Log.d(Tag,"@@@@복사시작");
         try {
+            boolean check = false;
             String fileName = new File(imagePath).getName();
             File sd = Environment.getExternalStorageDirectory();
-            fileUrl = sd.getAbsolutePath()+"/WallP/"+fileName;
-
-            FileInputStream inStream = new FileInputStream(imagePath);
-            FileOutputStream outStream = new FileOutputStream(sd.getAbsolutePath()+"/WallP/"+fileName);
-            FileChannel inChannel = inStream.getChannel();
-            FileChannel outChannel = outStream.getChannel();
-            inChannel.transferTo(0, inChannel.size(), outChannel);
-            inStream.close();
-            outStream.close();
-
-            updateImageView(fileUrl);
-        } catch (Exception ex) {ex.printStackTrace();}
+            fileUrl = sd.getAbsolutePath() + "/WallP/" + fileName;
+            check = checkCopyImageFile(sd.getAbsolutePath() + "/WallP", imagePath);
+            if (!check) {
+                FileInputStream inStream = new FileInputStream(imagePath);
+                FileOutputStream outStream = new FileOutputStream(sd.getAbsolutePath() + "/WallP/" + fileName);
+                FileChannel inChannel = inStream.getChannel();
+                FileChannel outChannel = outStream.getChannel();
+                inChannel.transferTo(0, inChannel.size(), outChannel);
+                inStream.close();
+                outStream.close();
+                updateImageView(fileUrl);
+            }
+            else updateImageView(sd.getAbsolutePath() + "/WallP/" + fileName);
+        }catch (Exception ex) {ex.printStackTrace();}
     }
     @UiThread
     protected void updateImageView(String result) {
-        Log.d(Tag,"@@@@복사끝");
         _wallpaperFragment.setImageView(result);
         _wallpaperSwitchFragment.addWallpaper(result);
     }
     //**************************파일 복사를 위한 메소드*************************************************
-    public String getImagePath(Uri uri){
+    public String getImagePath(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
         cursor.close();
 
         cursor = getContentResolver().query(
@@ -155,13 +160,18 @@ public class MainActivity extends AppCompatActivity {
 
         return path;
     }
+
     //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
-    public void setBackGround(String imagePath){
+    public void setBackGround(String imagePath) {
         WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
         Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
-        try { myWallpaperManager.setBitmap(wallPaperImage);}
-        catch (IOException e) {  e.printStackTrace(); }
+        try {
+            myWallpaperManager.setBitmap(wallPaperImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
     //**************************뒤로가기 눌려졌을때 ***************************************************
     @Override
     public void onBackPressed() {
@@ -170,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         finish();
         android.os.Process.killProcess(android.os.Process.myPid());
     }
+
     //***************************dialog**********************************************************
     void showInputDialog() {
         // get prompts.xml view
@@ -196,6 +207,43 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+    //************************중복된 파일이 있는지 확인을 한담*****************************************
+    private boolean checkCopyImageFile(String filePath, String imagePath) {
+        try {
+            boolean imageNameOverlap = false;
+            boolean sizeOverlap = false;
+            String filename = new File(imagePath).getName();
+
+            File file = new File(filePath);
+            File[] files = file.listFiles();//위에 만들어 두신 필터를 넣으세요. 만약 필요치 않으시면 fileFilter를 지우세요.
+            String[] titleList = new String[files.length]; //파일이 있는 만큼 어레이 생성했구요
+
+            //****************이미지이름 중복검사를 확인한다********************************************
+            for (int i = 0; i < files.length; i++) {
+                titleList[i] = files[i].getName();
+                if(titleList[i].trim().equals(filename.trim())) imageNameOverlap = true;
+            }
+            //****************이미지크기를 검사한다***************************************************
+            if (imageNameOverlap) {
+                int firImageWidthSize = 0, firImageHeightSize = 0;
+                int secImageWidthSize = 0, secImageHeightSize = 0;
+
+                Bitmap firImage = BitmapFactory.decodeFile(imagePath);
+                firImageWidthSize = firImage.getWidth();
+                firImageHeightSize = firImage.getHeight();
+
+                Bitmap secImage = BitmapFactory.decodeFile(filePath + "/" + filename);
+                secImageWidthSize = firImage.getWidth();
+                secImageHeightSize = firImage.getHeight();
+
+                if (firImageWidthSize == secImageWidthSize && firImageHeightSize == secImageHeightSize)
+                    sizeOverlap = true; //사이즈도 같음
+
+                return sizeOverlap && imageNameOverlap;
+            }
+            return false;
+        } catch (Exception e) {return false;}
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

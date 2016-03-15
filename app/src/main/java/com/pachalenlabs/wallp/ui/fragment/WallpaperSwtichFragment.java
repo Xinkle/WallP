@@ -1,16 +1,12 @@
 package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -19,12 +15,10 @@ import com.pachalenlabs.wallp.module.WPCore;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.apache.log4j.Logger;
 
-import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -60,11 +54,7 @@ public class WallpaperSwtichFragment extends Fragment{
     @UiThread
     public void addWallpaper(final String filePath){
         ImageView imgView = new ImageView(getActivity());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                300,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0.0F
-        );
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300,LinearLayout.LayoutParams.MATCH_PARENT,0.0F);
         int imageMargin = WPCore.getPixelValue(getActivity(), R.dimen.wallpeper_switch_margin);
         Log.d("WallP", "Pixel : " + imageMargin + " Dimen : " + getResources().getDimension(R.dimen.wallpeper_switch_margin));
         params.setMargins(imageMargin,imageMargin,imageMargin,imageMargin);
