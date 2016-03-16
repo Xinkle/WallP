@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.pachalenlabs.wallp.R;
 
+import org.androidannotations.annotations.Background;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -38,11 +39,11 @@ import java.util.ArrayList;
  */
 public class WPCore {
     // Logger
-    private final Logger logger = Logger.getLogger(WPCore.class);
+    private final static Logger logger = Logger.getLogger(WPCore.class);
     // Singleton Instance
     private static WPCore ourInstance = new WPCore();
     // App Data
-    private static WPData appData;
+    private WPData appData;
 
     public static WPData getAppData() {
         return ourInstance.appData;
@@ -66,7 +67,7 @@ public class WPCore {
      * save data to json
      */
     public void saveData() {
-        logger.debug("Time : " + ourInstance.appData.getTimeGap() + " Count : " + ourInstance.appData.getWallpaperUris().size());
+        logger.debug("Time : " + appData.getTimeGap() + " Count : " + appData.getWallpaperUris().size());
         Gson gson = new Gson();
         String jsonData = gson.toJson(appData);
         WriteTextFile(FILE_NAME, jsonData);
@@ -101,7 +102,7 @@ public class WPCore {
      * @param strFileName filename
      * @return text of file
      */
-    public String ReadTextFile(String strFileName) {
+    public static String ReadTextFile(String strFileName) {
         String read_text = "";
         try {
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WallP/" + strFileName);
@@ -127,7 +128,7 @@ public class WPCore {
      * @param strBuf      string to write
      * @return write sucess or not
      */
-    public boolean WriteTextFile(String strFileName, String strBuf) {
+    public static boolean WriteTextFile(String strFileName, String strBuf) {
         try {
             logger.debug("Write : " + strBuf);
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WallP/" + strFileName);

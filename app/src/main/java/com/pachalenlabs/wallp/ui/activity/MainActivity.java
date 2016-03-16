@@ -14,11 +14,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +32,7 @@ import com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,6 +43,9 @@ import java.nio.channels.FileChannel;
 @SuppressLint("Registered")
 @EActivity
 public class MainActivity extends AppCompatActivity {
+    // Logger
+    private final static Logger logger = Logger.getLogger(MainActivity.class);
+
     public static final int PICK_PICTURE = 1;
 
     @FragmentById(R.id.PictureInformationFragment)
@@ -55,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
     @FragmentById(R.id.wallpeper_fragment)
     WallpaperFragment mWallpaperFragment;
 
-    String _imageFilePath;
-    String Tag = "MainActivity";
+    String mImageFilePath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, PICK_PICTURE);
             }
         });
+        */
+        
         mPictureInformationFragment.setDescription(getResources().getString(R.string.picture_information));
         mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperUris().size());
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener() {
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInputDialog();
+                showInputIntervalDialog();
             }
         };
         mIntervalFragment.setClickListenerToLayout(ExchangeOnInformationButtonClick);
@@ -101,10 +105,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == PICK_PICTURE) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getData();
-                _imageFilePath = getImagePath(uri);
-                setBackGround(_imageFilePath);
+                mImageFilePath = getImagePath(uri);
+                setBackGround(mImageFilePath);
                 mWallpaperFragment.setLodingImageView();
-                copyInBackground(_imageFilePath);
+                copyInBackground(mImageFilePath);
             }
         }
     }
@@ -113,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
     @Background
     protected void copyInBackground(String imagePath) {
         String fileUrl;
-        Log.d(Tag, "@@@@복사시작");
         try {
             String fileName = new File(imagePath).getName();
             File sd = Environment.getExternalStorageDirectory();
@@ -135,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
     @UiThread
     protected void updateImageView(String result) {
-        Log.d(Tag, "@@@@복사끝");
         mWallpaperFragment.setImageView(result);
         mWallpaperSwitchFragment.addWallpaper(result);
     }
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //***************************dialog**********************************************************
-    void showInputDialog() {
+    void showInputIntervalDialog() {
         // Set Custom View for dialog
         LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
         View promptView = layoutInflater.inflate(R.layout.input_interval_dialog, null);
@@ -220,7 +222,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.menu_action_add_wallpaper) {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+            intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, PICK_PICTURE);
             return true;
         }
 
