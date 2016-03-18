@@ -214,15 +214,10 @@ public class MainActivity extends AppCompatActivity {
             boolean sizeOverlap = false;
             String filename = new File(imagePath).getName();
 
-            File file = new File(filePath);
-            File[] files = file.listFiles();//위에 만들어 두신 필터를 넣으세요. 만약 필요치 않으시면 fileFilter를 지우세요.
-            String[] titleList = new String[files.length]; //파일이 있는 만큼 어레이 생성했구요
-
             //****************이미지이름 중복검사를 확인한다********************************************
-            for (int i = 0; i < files.length; i++) {
-                titleList[i] = files[i].getName();
-                if(titleList[i].trim().equals(filename.trim())) imageNameOverlap = true;
-            }
+            File file = new File(filePath + "/" + filename);
+            imageNameOverlap = file.exists();
+            Log.d(Tag,"@@@@@ imageName"+imageNameOverlap);
             //****************이미지크기를 검사한다***************************************************
             if (imageNameOverlap) {
                 int firImageWidthSize = 0, firImageHeightSize = 0;
@@ -238,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (firImageWidthSize == secImageWidthSize && firImageHeightSize == secImageHeightSize)
                     sizeOverlap = true; //사이즈도 같음
-
+                Log.d(Tag,"@@@@@ size"+sizeOverlap);
                 return sizeOverlap && imageNameOverlap;
             }
             return false;
