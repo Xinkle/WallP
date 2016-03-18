@@ -2,7 +2,6 @@ package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
 import android.content.ContentResolver;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,13 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.module.WPCore;
 
@@ -46,7 +38,6 @@ public class WallpaperFragment extends Fragment {
     @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedPhotoImageView;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +54,10 @@ public class WallpaperFragment extends Fragment {
     public void setupViews() {
         WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.test_wallpaper);
     }
-
     public void setLodingImageView() {
         WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.copylodingimage);
-    }
 
+    }
     @UiThread
     public void setImageView(String imagePath) {
         WPCore.setImageToView(_selectedPhotoImageView, "file://" + imagePath);
