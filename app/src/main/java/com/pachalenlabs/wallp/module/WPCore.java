@@ -23,6 +23,7 @@ import com.pachalenlabs.wallp.R;
 
 import org.apache.log4j.Logger;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -107,13 +108,13 @@ public class WPCore {
         try {
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WallP/" + strFileName);
             FileInputStream fis = new FileInputStream(file);
-            Reader in = new InputStreamReader(fis);
-            int size = fis.available();
-            char[] buffer = new char[size];
-            in.read(buffer);
-            in.close();
-
-            read_text = new String(buffer);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            String temp;
+            while ((temp = in.readLine()) != null){
+                sb.append(temp);
+            }
+            read_text = sb.toString();
         } catch (IOException e) {
             logger.error(e.toString());
         }
@@ -132,6 +133,7 @@ public class WPCore {
         try {
             logger.debug("Write : " + strBuf);
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WallP/" + strFileName);
+            if(file.exists()) file.delete();
             FileOutputStream fos = new FileOutputStream(file);
             Writer out = new OutputStreamWriter(fos, "UTF-8");
             out.write(strBuf);

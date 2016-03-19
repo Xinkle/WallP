@@ -13,6 +13,7 @@ import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.module.WPCore;
 
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -30,6 +31,8 @@ public class InformationFragment extends Fragment {
     @ViewById(R.id.informationFragment_Layout)
     LinearLayout mInformationFragmentLayout;
 
+    View mInflatedView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,15 +42,17 @@ public class InformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.information_fragment, container, false);
+        mInflatedView = inflater.inflate(R.layout.information_fragment, container, false);
+        return mInflatedView;
     }
 
     public void setDescription(String description) {
         this.mDescription.setText(description);
     }
 
-    public void setValue(int value){
-        mValues.setText(value+"");
+    @UiThread
+    public void setValue(final int value){
+                mValues.setText(Integer.toString(value));
     }
 
     public void setClickListenerToLayout(View.OnClickListener action) {

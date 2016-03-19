@@ -52,7 +52,9 @@ public class WallpaperSwtichFragment extends Fragment {
     @UiThread
     public void addWallpaper(String filePath) {
         WPCore.getAppData().addWallpaperPath(filePath);
+        WPCore.getInstance().saveData();
         showWallpaper(filePath);
+        mWallpapaerScrollLayout.requestLayout();
     }
 
     @UiThread

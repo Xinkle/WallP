@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 mImageFilePath = getImagePath(uri);
                 //setBackGround(mImageFilePath);
-                mWallpaperFragment.setLodingImageView();
+                //mWallpaperFragment.setLodingImageView();
                 copyInBackground(mImageFilePath);
             }
         }
@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
     protected void updateImageView(String result) {
         //mWallpaperFragment.setImageView(result);
         mWallpaperSwitchFragment.addWallpaper(result);
+        mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperPaths().size());
     }
 
     //**************************파일 복사를 위한 메소드*************************************************
@@ -179,13 +180,16 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
         alertDialogBuilder.setView(promptView);
 
-        final EditText intervalText = (EditText) promptView.findViewById(R.id.edittext);
+        final EditText intervalText = (EditText) promptView.findViewById(R.id.interval_dialog_input);
 
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         WPCore.getAppData().setTimeInterval(Integer.parseInt(intervalText.getText().toString()));
+                        logger.debug("Interval set to " + intervalText.getText().toString());
+                        WPCore.getInstance().saveData();
+                        mIntervalFragment.setValue(WPCore.getAppData().getTimeInterval());
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
