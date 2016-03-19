@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
-        
+
         mPictureInformationFragment.setDescription(getResources().getString(R.string.picture_information));
         mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperUris().size());
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener() {
@@ -118,22 +118,24 @@ public class MainActivity extends AppCompatActivity {
     protected void copyInBackground(String imagePath) {
         String fileUrl;
         try {
-            String fileName = new File(imagePath).getName();
+            boolean check = false;
             File sd = Environment.getExternalStorageDirectory();
+            check = checkCopyImageFile(sd.getAbsolutePath() + "/WallP", imagePath);
+            String fileName = new File(imagePath).getName();
             fileUrl = sd.getAbsolutePath() + "/WallP/" + fileName;
 
-            FileInputStream inStream = new FileInputStream(imagePath);
-            FileOutputStream outStream = new FileOutputStream(sd.getAbsolutePath() + "/WallP/" + fileName);
-            FileChannel inChannel = inStream.getChannel();
-            FileChannel outChannel = outStream.getChannel();
-            inChannel.transferTo(0, inChannel.size(), outChannel);
-            inStream.close();
-            outStream.close();
-
-            updateImageView(fileUrl);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+            if (!check) {
+                FileInputStream inStream = new FileInputStream(imagePath);
+                FileOutputStream outStream = new FileOutputStream(sd.getAbsolutePath() + "/WallP/" + fileName);
+                FileChannel inChannel = inStream.getChannel();
+                FileChannel outChannel = outStream.getChannel();
+                inChannel.transferTo(0, inChannel.size(), outChannel);
+                inStream.close();
+                outStream.close();
+                updateImageView(fileUrl);
+            }
+            else updateImageView(sd.getAbsolutePath() + "/WallP/" + fileName);
+        } catch (Exception ex) { ex.printStackTrace(); }
     }
 
     @UiThread
@@ -207,6 +209,36 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+    //************************중복된 파일이 있는지 확인을 한담*****************************************
+    private boolean checkCopyImageFile(String filePath, String imagePath) {
+        try {
+            boolean imageNameOverlap = false;
+            boolean sizeOverlap = false;
+            String filename = new File(imagePath).getName();
+
+            //****************이미지이름 중복검사를 확인한다********************************************
+            File file = new File(filePath + "/" + filename);
+            imageNameOverlap = file.exists();
+            //****************이미지크기를 검사한다***************************************************
+            if (imageNameOverlap) {
+                int firImageWidthSize = 0, firImageHeightSize = 0;
+                int secImageWidthSize = 0, secImageHeightSize = 0;
+
+                Bitmap firImage = BitmapFactory.decodeFile(imagePath);
+                firImageWidthSize = firImage.getWidth();
+                firImageHeightSize = firImage.getHeight();
+
+                Bitmap secImage = BitmapFactory.decodeFile(filePath + "/" + filename);
+                secImageWidthSize = firImage.getWidth();
+                secImageHeightSize = firImage.getHeight();
+
+                if (firImageWidthSize == secImageWidthSize && firImageHeightSize == secImageHeightSize)
+                    sizeOverlap = true; //사이즈도 같음
+                return sizeOverlap && imageNameOverlap;
+            }
+            return false;
+        } catch (Exception e) {return false;}
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
