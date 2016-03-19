@@ -9,14 +9,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter replacement cycles photos"
+        android:text="@string/input_interval_guide"
         android:id="@+id/timeTextView" />
 
     <EditText
         android:id="@+id/edittext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter here"
         android:padding="10dp" />
 
 </LinearLayout>

@@ -2,7 +2,6 @@ package com.pachalenlabs.wallp.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.WallpaperManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,19 +13,17 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.pachalenlabs.wallp.R;
+import com.pachalenlabs.wallp.module.WPCore;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
 import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
 import com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment;
@@ -34,31 +31,31 @@ import com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 @SuppressLint("Registered")
 @EActivity
 public class MainActivity extends AppCompatActivity {
-
+    // Logger
+    private final static Logger logger = Logger.getLogger(MainActivity.class);
 
     public static final int PICK_PICTURE = 1;
 
     @FragmentById(R.id.PictureInformationFragment)
-    InformationFragment _pictureInformationFragment;
-    @FragmentById(R.id.ExchangeRatioFragment)
-    InformationFragment _exchangeRatioFragment;
+    InformationFragment mPictureInformationFragment;
+    @FragmentById(R.id.IntervalFragment)
+    InformationFragment mIntervalFragment;
     @FragmentById(R.id.wallpaper_switch_fragment)
-    WallpaperSwtichFragment _wallpaperSwitchFragment;
+    WallpaperSwtichFragment mWallpaperSwitchFragment;
     @FragmentById(R.id.wallpeper_fragment)
-    WallpaperFragment _wallpaperFragment;
+    WallpaperFragment mWallpaperFragment;
 
-    String _imageFilePath;
-    String Tag = "MainActivity";
+    String mImageFilePath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,41 +64,38 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplication(), "dd", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, PICK_PICTURE);
-                //_wallpaperSwitchFragment.addWallpaper();
-                /*
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                */
             }
         });
-        _pictureInformationFragment.setTitle("사진수");
-        _pictureInformationFragment.setValues(20);
+        */
+
+        mPictureInformationFragment.setDescription(getResources().getString(R.string.picture_information));
+        mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperPaths().size());
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(Tag, "11");
+
             }
         };
-        _pictureInformationFragment.setInformationButtonClick(PictureOnInformationButtonClick);
+        mPictureInformationFragment.setClickListenerToLayout(PictureOnInformationButtonClick);
 
-        _exchangeRatioFragment.setTitle("교체 주기");
-        _exchangeRatioFragment.setValues(30);
+        mIntervalFragment.setDescription(getResources().getString(R.string.interval_information));
+        mIntervalFragment.setValue(WPCore.getAppData().getTimeInterval());
         View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInputDialog();
+                showInputIntervalDialog();
             }
         };
-        _exchangeRatioFragment.setInformationButtonClick(ExchangeOnInformationButtonClick);
+        mIntervalFragment.setClickListenerToLayout(ExchangeOnInformationButtonClick);
     }
 
     @Override
@@ -109,10 +103,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == PICK_PICTURE) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getData();
-                _imageFilePath = getImagePath(uri);
-                setBackGround(_imageFilePath);
-                _wallpaperFragment.setLodingImageView();
-                copyInBackground(_imageFilePath);
+                mImageFilePath = getImagePath(uri);
+                //setBackGround(mImageFilePath);
+                mWallpaperFragment.setLodingImageView();
+                copyInBackground(mImageFilePath);
             }
         }
     }
@@ -120,32 +114,34 @@ public class MainActivity extends AppCompatActivity {
     //***************************AsyncTask*******************************************************
     @Background
     protected void copyInBackground(String imagePath) {
-        String fileUrl;
+        String outputFilePath;
         try {
             boolean check = false;
             File sd = Environment.getExternalStorageDirectory();
             check = checkCopyImageFile(sd.getAbsolutePath() + "/WallP", imagePath);
             String fileName = new File(imagePath).getName();
-            fileUrl = sd.getAbsolutePath() + "/WallP/" + fileName;
+            outputFilePath = sd.getAbsolutePath() + "/WallP/" + fileName;
 
             if (!check) {
                 FileInputStream inStream = new FileInputStream(imagePath);
-                FileOutputStream outStream = new FileOutputStream(sd.getAbsolutePath() + "/WallP/" + fileName);
+                FileOutputStream outStream = new FileOutputStream(outputFilePath);
                 FileChannel inChannel = inStream.getChannel();
                 FileChannel outChannel = outStream.getChannel();
                 inChannel.transferTo(0, inChannel.size(), outChannel);
                 inStream.close();
                 outStream.close();
-                updateImageView(fileUrl);
             }
-            else updateImageView(sd.getAbsolutePath() + "/WallP/" + fileName);
-        } catch (Exception ex) { ex.printStackTrace(); }
+
+            updateImageView(outputFilePath);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @UiThread
     protected void updateImageView(String result) {
-        _wallpaperFragment.setImageView(result);
-        _wallpaperSwitchFragment.addWallpaper(result);
+        //mWallpaperFragment.setImageView(result);
+        mWallpaperSwitchFragment.addWallpaper(result);
     }
 
     //**************************파일 복사를 위한 메소드*************************************************
@@ -166,17 +162,6 @@ public class MainActivity extends AppCompatActivity {
         return path;
     }
 
-    //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
-    public void setBackGround(String imagePath) {
-        WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-        Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
-        try {
-            myWallpaperManager.setBitmap(wallPaperImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     //**************************뒤로가기 눌려졌을때 ***************************************************
     @Override
     public void onBackPressed() {
@@ -187,19 +172,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //***************************dialog**********************************************************
-    void showInputDialog() {
-        // get prompts.xml view
+    void showInputIntervalDialog() {
+        // Set Custom View for dialog
         LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-        View promptView = layoutInflater.inflate(R.layout.input_time_dialog, null);
+        View promptView = layoutInflater.inflate(R.layout.input_interval_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
         alertDialogBuilder.setView(promptView);
 
-        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        final EditText intervalText = (EditText) promptView.findViewById(R.id.edittext);
+
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        _exchangeRatioFragment.setValues(Integer.parseInt(editText.getText().toString()));
+                        WPCore.getAppData().setTimeInterval(Integer.parseInt(intervalText.getText().toString()));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -240,8 +226,11 @@ public class MainActivity extends AppCompatActivity {
                 return sizeOverlap && imageNameOverlap;
             }
             return false;
-        } catch (Exception e) {return false;}
+        } catch (Exception e) {
+            return false;
+        }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -257,7 +246,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.menu_action_add_wallpaper) {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+            intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, PICK_PICTURE);
             return true;
         }
 

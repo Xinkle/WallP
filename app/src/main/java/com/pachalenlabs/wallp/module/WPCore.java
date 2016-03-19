@@ -1,14 +1,17 @@
 package com.pachalenlabs.wallp.module;
 
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -36,11 +39,16 @@ import java.util.ArrayList;
  */
 public class WPCore {
     // Logger
-    private final Logger logger = Logger.getLogger(WPCore.class);
+    private final static Logger logger = Logger.getLogger(WPCore.class);
     // Singleton Instance
     private static WPCore ourInstance = new WPCore();
     // App Data
     private WPData appData;
+
+    public static WPData getAppData() {
+        return ourInstance.appData;
+    }
+
     // Datafile Name
     private static final String FILE_NAME = "WallP_Data.json";
 
@@ -53,13 +61,13 @@ public class WPCore {
      */
     private WPCore() {
         logger.info("Core Created!");
-        loadData();
     }
 
     /**
      * save data to json
      */
     public void saveData() {
+        logger.debug("Time : " + appData.getTimeInterval() + " Count : " + appData.getWallpaperPaths().size());
         Gson gson = new Gson();
         String jsonData = gson.toJson(appData);
         WriteTextFile(FILE_NAME, jsonData);
@@ -69,14 +77,22 @@ public class WPCore {
      * load data from json file
      */
     public void loadData() {
-        appData = new WPData();
         String jsonData = ReadTextFile(FILE_NAME);
         Gson gson = new Gson();
         if ("".equals(jsonData)) {
-            logger.info("File Unavailable");
+            logger.error("File Unavailable");
+            appData = new WPData();
+            logger.debug("Time : " + appData.getTimeInterval() + " Count : " + appData.getWallpaperPaths().size());
+            saveData();
         } else {
             logger.info("File Loaded");
-            appData = gson.fromJson(jsonData, WPData.class);
+            try {
+                appData = gson.fromJson(jsonData, WPData.class);
+            }catch(JsonSyntaxException e){
+                logger.error("File Syntax Corrupted!");
+                appData = new WPData();
+                saveData();
+            }
         }
     }
 
@@ -86,7 +102,7 @@ public class WPCore {
      * @param strFileName filename
      * @return text of file
      */
-    public String ReadTextFile(String strFileName) {
+    public static String ReadTextFile(String strFileName) {
         String read_text = "";
         try {
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WallP/" + strFileName);
@@ -101,6 +117,7 @@ public class WPCore {
         } catch (IOException e) {
             logger.error(e.toString());
         }
+        logger.debug(read_text);
         return read_text;
     }
 
@@ -111,8 +128,9 @@ public class WPCore {
      * @param strBuf      string to write
      * @return write sucess or not
      */
-    public boolean WriteTextFile(String strFileName, String strBuf) {
+    public static boolean WriteTextFile(String strFileName, String strBuf) {
         try {
+            logger.debug("Write : " + strBuf);
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WallP/" + strFileName);
             FileOutputStream fos = new FileOutputStream(file);
             Writer out = new OutputStreamWriter(fos, "UTF-8");
@@ -123,22 +141,6 @@ public class WPCore {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Data Class
-     */
-    private class WPData {
-        // List of Wallpaper
-        ArrayList<String> wallpaperUris;
-        // Timegap(Miniute)
-        int timeGap;
-
-        public WPData() {
-            logger.info("File Initialized");
-            wallpaperUris = new ArrayList<>();
-            timeGap = 10;
-        }
     }
 
     public static int getPixelValue(Context context, int dimenId) {
@@ -185,4 +187,69 @@ public class WPCore {
         ImageLoader.getInstance().init(imlConfig);
     }
 
+    //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
+    public static void setBackGround(String imagePath, Context context) {
+        WallpaperManager myWallpaperManager = WallpaperManager.getInstance(context);
+        Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
+        try {
+            myWallpaperManager.setBitmap(wallPaperImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Data Class
+     */
+    public class WPData {
+        // List of Wallpaper
+        public ArrayList<String> mWallpaperPaths;
+
+        public ArrayList<String> getWallpaperPaths() {
+            return mWallpaperPaths;
+        }
+
+        public void addWallpaperPath(String wallPaperPath) {
+            mWallpaperPaths.add(wallPaperPath);
+        }
+
+        // Timegap(Miniute)
+        public int mTimeInterval;
+
+        public int getTimeInterval() {
+            return mTimeInterval;
+        }
+
+        public void setTimeInterval(int timeInterval) {
+            this.mTimeInterval = timeInterval;
+        }
+
+        // Current Wallpapaer
+        private int mNextWallpaper;
+
+        public int getNextWallpaper() {
+            if (mWallpaperPaths.size() == 0)
+                return -1;
+            else if(mWallpaperPaths.size() <= mNextWallpaper)
+                return mWallpaperPaths.size() - 1;
+            else
+                return mNextWallpaper;
+        }
+
+        public void setNextWallpaper() {
+            int nextWallpaper = mNextWallpaper + 1;
+
+            if(nextWallpaper >= mWallpaperPaths.size())
+                this.mNextWallpaper = 0;
+            else
+               this.mNextWallpaper = nextWallpaper;
+        }
+
+        public WPData() {
+            logger.info("File Initialized");
+            mWallpaperPaths = new ArrayList<>();
+            mTimeInterval = 10;
+            mNextWallpaper = 0;
+        }
+    }
 }

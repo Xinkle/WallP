@@ -25,6 +25,7 @@ public class WPApp extends Application {
         WPLogger.configure(getApplicationContext());
         WPCore.getInstance();
         WPCore.imageLoaderConfig(this);
+        WPCore.getInstance().loadData();
         logger.info("App Initialized!!");
     }
 }

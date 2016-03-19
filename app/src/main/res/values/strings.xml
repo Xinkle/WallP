@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">WallP</string>
+    <string name="app_name" translatable="false">WallP</string>
     <string name="title_activity_act_fadeout">ActFadeout</string>
-    <string name="action_settings">Settings</string>
+    <string name="menu_action_add_wallpaper">추가</string>
+    <string name="input_interval_guide">배경화면을 바꿀 간격(분)을 입력하세요.</string>
+    <string name="picture_information">사진 수</string>
+    <string name="interval_information">교체 주기</string>
 </resources>
