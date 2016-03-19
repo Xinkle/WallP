@@ -2,7 +2,6 @@ package com.pachalenlabs.wallp.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.WallpaperManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -37,7 +36,6 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 @SuppressLint("Registered")
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         */
 
         mPictureInformationFragment.setDescription(getResources().getString(R.string.picture_information));
-        mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperUris().size());
+        mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperPaths().size());
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         mPictureInformationFragment.setClickListenerToLayout(PictureOnInformationButtonClick);
 
         mIntervalFragment.setDescription(getResources().getString(R.string.interval_information));
-        mIntervalFragment.setValue(WPCore.getAppData().getTimeGap());
+        mIntervalFragment.setValue(WPCore.getAppData().getTimeInterval());
         View.OnClickListener ExchangeOnInformationButtonClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getData();
                 mImageFilePath = getImagePath(uri);
-                setBackGround(mImageFilePath);
+                //setBackGround(mImageFilePath);
                 mWallpaperFragment.setLodingImageView();
                 copyInBackground(mImageFilePath);
             }
@@ -116,31 +114,33 @@ public class MainActivity extends AppCompatActivity {
     //***************************AsyncTask*******************************************************
     @Background
     protected void copyInBackground(String imagePath) {
-        String fileUrl;
+        String outputFilePath;
         try {
             boolean check = false;
             File sd = Environment.getExternalStorageDirectory();
             check = checkCopyImageFile(sd.getAbsolutePath() + "/WallP", imagePath);
             String fileName = new File(imagePath).getName();
-            fileUrl = sd.getAbsolutePath() + "/WallP/" + fileName;
+            outputFilePath = sd.getAbsolutePath() + "/WallP/" + fileName;
 
             if (!check) {
                 FileInputStream inStream = new FileInputStream(imagePath);
-                FileOutputStream outStream = new FileOutputStream(sd.getAbsolutePath() + "/WallP/" + fileName);
+                FileOutputStream outStream = new FileOutputStream(outputFilePath);
                 FileChannel inChannel = inStream.getChannel();
                 FileChannel outChannel = outStream.getChannel();
                 inChannel.transferTo(0, inChannel.size(), outChannel);
                 inStream.close();
                 outStream.close();
-                updateImageView(fileUrl);
             }
-            else updateImageView(sd.getAbsolutePath() + "/WallP/" + fileName);
-        } catch (Exception ex) { ex.printStackTrace(); }
+
+            updateImageView(outputFilePath);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @UiThread
     protected void updateImageView(String result) {
-        mWallpaperFragment.setImageView(result);
+        //mWallpaperFragment.setImageView(result);
         mWallpaperSwitchFragment.addWallpaper(result);
     }
 
@@ -160,17 +160,6 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
 
         return path;
-    }
-
-    //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
-    public void setBackGround(String imagePath) {
-        WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-        Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
-        try {
-            myWallpaperManager.setBitmap(wallPaperImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     //**************************뒤로가기 눌려졌을때 ***************************************************
@@ -196,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        WPCore.getAppData().setTimeGap(Integer.parseInt(intervalText.getText().toString()));
+                        WPCore.getAppData().setTimeInterval(Integer.parseInt(intervalText.getText().toString()));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -237,8 +226,11 @@ public class MainActivity extends AppCompatActivity {
                 return sizeOverlap && imageNameOverlap;
             }
             return false;
-        } catch (Exception e) {return false;}
+        } catch (Exception e) {
+            return false;
+        }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -1,9 +1,10 @@
 package com.pachalenlabs.wallp.module;
 
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
@@ -20,7 +21,6 @@ import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.pachalenlabs.wallp.R;
 
-import org.androidannotations.annotations.Background;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -67,7 +67,7 @@ public class WPCore {
      * save data to json
      */
     public void saveData() {
-        logger.debug("Time : " + appData.getTimeGap() + " Count : " + appData.getWallpaperUris().size());
+        logger.debug("Time : " + appData.getTimeInterval() + " Count : " + appData.getWallpaperPaths().size());
         Gson gson = new Gson();
         String jsonData = gson.toJson(appData);
         WriteTextFile(FILE_NAME, jsonData);
@@ -82,7 +82,7 @@ public class WPCore {
         if ("".equals(jsonData)) {
             logger.error("File Unavailable");
             appData = new WPData();
-            logger.debug("Time : " + appData.getTimeGap() + " Count : " + appData.getWallpaperUris().size());
+            logger.debug("Time : " + appData.getTimeInterval() + " Count : " + appData.getWallpaperPaths().size());
             saveData();
         } else {
             logger.info("File Loaded");
@@ -187,36 +187,69 @@ public class WPCore {
         ImageLoader.getInstance().init(imlConfig);
     }
 
+    //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
+    public static void setBackGround(String imagePath, Context context) {
+        WallpaperManager myWallpaperManager = WallpaperManager.getInstance(context);
+        Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
+        try {
+            myWallpaperManager.setBitmap(wallPaperImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Data Class
      */
     public class WPData {
         // List of Wallpaper
-        public ArrayList<Uri> wallpaperUris;
+        public ArrayList<String> mWallpaperPaths;
 
-        public ArrayList<Uri> getWallpaperUris() {
-            return wallpaperUris;
+        public ArrayList<String> getWallpaperPaths() {
+            return mWallpaperPaths;
         }
 
-        public void addWallpaperUri(Uri wallpaperUri) {
-            wallpaperUris.add(wallpaperUri);
+        public void addWallpaperPath(String wallPaperPath) {
+            mWallpaperPaths.add(wallPaperPath);
         }
 
         // Timegap(Miniute)
-        public int timeGap;
+        public int mTimeInterval;
 
-        public int getTimeGap() {
-            return timeGap;
+        public int getTimeInterval() {
+            return mTimeInterval;
         }
 
-        public void setTimeGap(int timeGap) {
-            this.timeGap = timeGap;
+        public void setTimeInterval(int timeInterval) {
+            this.mTimeInterval = timeInterval;
+        }
+
+        // Current Wallpapaer
+        private int mNextWallpaper;
+
+        public int getNextWallpaper() {
+            if (mWallpaperPaths.size() == 0)
+                return -1;
+            else if(mWallpaperPaths.size() <= mNextWallpaper)
+                return mWallpaperPaths.size() - 1;
+            else
+                return mNextWallpaper;
+        }
+
+        public void setNextWallpaper() {
+            int nextWallpaper = mNextWallpaper + 1;
+
+            if(nextWallpaper >= mWallpaperPaths.size())
+                this.mNextWallpaper = 0;
+            else
+               this.mNextWallpaper = nextWallpaper;
         }
 
         public WPData() {
             logger.info("File Initialized");
-            wallpaperUris = new ArrayList<>();
-            timeGap = 10;
+            mWallpaperPaths = new ArrayList<>();
+            mTimeInterval = 10;
+            mNextWallpaper = 0;
         }
     }
 }

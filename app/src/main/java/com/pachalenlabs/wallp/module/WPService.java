@@ -1,22 +1,13 @@
 package com.pachalenlabs.wallp.module;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.Toast;
 
-import com.pachalenlabs.wallp.R;
-
 import org.androidannotations.annotations.EService;
-import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.UiThread;
 import org.apache.log4j.Logger;
 
@@ -49,11 +40,15 @@ public class WPService extends Service {
     class WallpaperTask extends TimerTask {
         @Override
         public void run() {
+            WPCore.setBackGround(WPCore.getAppData().getWallpaperPaths()
+                    .get(WPCore.getAppData().getNextWallpaper())
+                    , getApplicationContext());
+            WPCore.getAppData().setNextWallpaper();
             logger.info("Wallpaper Changed!");
         }
     }
 
-    private void startWPService(Intent intent){
+    private void startWPService(Intent intent) {
         logger.info("Start Service");
         final int INTERVEL_IN_MINIUTE = intent.getIntExtra("wallpaperInterval", 60);
 
@@ -66,14 +61,14 @@ public class WPService extends Service {
         IS_SERVICE_RUNNING = true;
     }
 
-    private void stopWPService(){
+    private void stopWPService() {
         logger.info("Stop Service");
         mWallpaperTimer.cancel();
 
         IS_SERVICE_RUNNING = false;
     }
 
-    private void initWPService(){
+    private void initWPService() {
         logger.info("Init Service");
     }
 
@@ -83,16 +78,15 @@ public class WPService extends Service {
 
         int runStatus = intent.getIntExtra("runStatus", INIT);
         logger.info("Command = " + runStatus);
-        switch (runStatus){
+        switch (runStatus) {
             case INIT:
                 serviceToast("Service Init");
                 initWPService();
                 break;
             case START:
-                if(!IS_SERVICE_RUNNING){
+                if (!IS_SERVICE_RUNNING) {
                     serviceToast("Service ON");
-                }
-                else{
+                } else {
                     serviceToast("Service Restart");
                     stopWPService();
                 }
@@ -124,7 +118,7 @@ public class WPService extends Service {
     }
 
     @UiThread
-    public void serviceToast(String string){
+    public void serviceToast(String string) {
         Toast.makeText(getApplicationContext(), string, Toast.LENGTH_SHORT).show();
     }
 

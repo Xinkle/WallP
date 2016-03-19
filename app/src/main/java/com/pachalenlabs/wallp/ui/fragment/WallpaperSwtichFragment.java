@@ -1,7 +1,6 @@
 package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,26 +18,24 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-
 /**
  * Created by Niklane on 2016-01-20.
  */
 
 @EFragment
-public class WallpaperSwtichFragment extends Fragment{
+public class WallpaperSwtichFragment extends Fragment {
     //Logger
     private final Logger logger = Logger.getLogger(WallpaperSwtichFragment.class);
     @ViewById(R.id.wallpaper_scroll_layout)
-    LinearLayout _WallpapaerScrollLayout;
+    LinearLayout mWallpapaerScrollLayout;
 
-    WallpaperFragment _WallpaperFragment;
-    ArrayList<Uri> _ImageUris = new ArrayList<Uri>();
+    WallpaperFragment mWallpaperFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,17 +44,24 @@ public class WallpaperSwtichFragment extends Fragment{
     }
 
     @AfterViews
-    void setupView(){
-        _WallpaperFragment = (WallpaperFragment)getFragmentManager().findFragmentById(R.id.wallpeper_fragment);
+    void setupView() {
+        mWallpaperFragment = (WallpaperFragment) getFragmentManager().findFragmentById(R.id.wallpeper_fragment);
+        showAllWallpaper();
     }
 
     @UiThread
-    public void addWallpaper(final String filePath){
+    public void addWallpaper(String filePath) {
+        WPCore.getAppData().addWallpaperPath(filePath);
+        showWallpaper(filePath);
+    }
+
+    @UiThread
+    public void showWallpaper(final String filePath) {
         ImageView imgView = new ImageView(getActivity());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300,LinearLayout.LayoutParams.MATCH_PARENT,0.0F);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.MATCH_PARENT, 0.0F);
         int imageMargin = WPCore.getPixelValue(getActivity(), R.dimen.wallpeper_switch_margin);
         Log.d("WallP", "Pixel : " + imageMargin + " Dimen : " + getResources().getDimension(R.dimen.wallpeper_switch_margin));
-        params.setMargins(imageMargin,imageMargin,imageMargin,imageMargin);
+        params.setMargins(imageMargin, imageMargin, imageMargin, imageMargin);
         imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         imgView.setLayoutParams(params);
 
@@ -66,12 +70,19 @@ public class WallpaperSwtichFragment extends Fragment{
         imgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageView iv = (ImageView)v;
-                _WallpaperFragment.setImageView(filePath);
+                ImageView iv = (ImageView) v;
+                mWallpaperFragment.setImageView(filePath);
             }
         });
         logger.info("Wallpaper Added!");
-        _WallpapaerScrollLayout.addView(imgView);
+        mWallpapaerScrollLayout.addView(imgView);
+    }
+
+    @UiThread
+    public void showAllWallpaper() {
+        for (String filePath : WPCore.getAppData().getWallpaperPaths()) {
+            showWallpaper(filePath);
+        }
     }
 
 }
