@@ -34,29 +34,31 @@ public class WPService extends Service {
     /* Service Running Indicator*/
     public static boolean IS_SERVICE_RUNNING = false;
 
-    private Timer mWallpaperTimer;
-    private WallpaperTask mWallpaperTask;
+    private static Timer mWallpaperTimer;
+    private static WallpaperTask mWallpaperTask;
 
     class WallpaperTask extends TimerTask {
         @Override
         public void run() {
-            WPCore.setBackGround(WPCore.getAppData().getWallpaperPaths()
-                    .get(WPCore.getAppData().getNextWallpaper())
-                    , getApplicationContext());
-            WPCore.getAppData().setNextWallpaper();
-            logger.info("Wallpaper Changed!");
+            if(WPCore.getAppData().mWallpaperPaths.size() != 0) {
+                WPCore.setBackGround("file://" + WPCore.getAppData().getWallpaperPaths()
+                                .get(WPCore.getAppData().getNextWallpaper())
+                        , getApplicationContext());
+                WPCore.getAppData().setNextWallpaper();
+                logger.info("Wallpaper Changed!");
+            }
         }
     }
 
-    private void startWPService(Intent intent) {
+    private void startWPService() {
         logger.info("Start Service");
-        final int INTERVEL_IN_MINIUTE = intent.getIntExtra("wallpaperInterval", 60);
+        final int INTERVEL_IN_MINIUTE = WPCore.getAppData().getTimeInterval();
 
         mWallpaperTimer = new Timer();
         mWallpaperTask = new WallpaperTask();
         mWallpaperTimer.schedule(mWallpaperTask, 0, INTERVEL_IN_MINIUTE * 60 * 1000);
 
-        logger.info("Run Timer, Interval = + " + INTERVEL_IN_MINIUTE + "min");
+        logger.info("Run Timer, Interval = " + INTERVEL_IN_MINIUTE + "min");
 
         IS_SERVICE_RUNNING = true;
     }
@@ -76,7 +78,7 @@ public class WPService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         logger.info("onStartCommand Start");
 
-        int runStatus = intent.getIntExtra("runStatus", INIT);
+        int runStatus = intent.getIntExtra("runState", INIT);
         logger.info("Command = " + runStatus);
         switch (runStatus) {
             case INIT:
@@ -90,7 +92,7 @@ public class WPService extends Service {
                     serviceToast("Service Restart");
                     stopWPService();
                 }
-                startWPService(intent);
+                startWPService();
 
                 break;
             case STOP:

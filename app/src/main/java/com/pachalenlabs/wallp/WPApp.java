@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.pachalenlabs.wallp.module.WPCore;
 import com.pachalenlabs.wallp.module.WPLogger;
+import com.pachalenlabs.wallp.module.WPService;
+import com.pachalenlabs.wallp.module.WPService_;
 
 import org.androidannotations.annotations.EApplication;
 import org.apache.log4j.Logger;
@@ -26,6 +28,9 @@ public class WPApp extends Application {
         WPCore.getInstance();
         WPCore.imageLoaderConfig(this);
         WPCore.getInstance().loadData();
+        WPService_.intent(getApplicationContext())
+                .extra("runState", WPService.START)
+                .start();
         logger.info("App Initialized!!");
     }
 }
