@@ -52,12 +52,9 @@ public class WallpaperFragment extends Fragment {
 
     @AfterViews
     public void setupViews() {
-        WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.test_wallpaper);
-    }
-    public void setLodingImageView() {
         WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.copylodingimage);
-
     }
+
     @UiThread
     public void setImageView(String imagePath) {
         WPCore.setImageToView(_selectedPhotoImageView, "file://" + imagePath);
