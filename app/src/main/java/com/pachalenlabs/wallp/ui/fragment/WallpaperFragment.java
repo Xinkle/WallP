@@ -49,14 +49,10 @@ public class WallpaperFragment extends Fragment {
         return inflater.inflate(R.layout.wallpaper_fragment, container, false);
     }
 
-    @AfterViews
-    public void setupViews() {
-        WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.logo);
-    }
-
-    public void setLodingImageView() {
-        WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.copylodingimage);
-    }
+        @AfterViews
+        public void setupViews() {
+            WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.copylodingimage);
+        }
 
     @UiThread
     public void setImageView(String imagePath) {

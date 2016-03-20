@@ -61,6 +61,7 @@
         sl:scale_top="10"
         sl:scale_width="50"
         sl:scale_height="50"
-        android:background="@drawable/abc_ic_clear_mtrl_alpha" />
+        android:background="@android:drawable/ic_delete"
+         />
 </com.ssomai.android.scalablelayout.ScalableLayout>
 </LinearLayout>
