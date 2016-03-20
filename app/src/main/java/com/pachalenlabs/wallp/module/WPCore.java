@@ -181,9 +181,10 @@ public class WPCore {
         ImageLoaderConfiguration imlConfig;
         imlConfig = new ImageLoaderConfiguration.Builder(context)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                //.denyCacheImageMultipleSizesInMemory()
+                .tasksProcessingOrder(QueueProcessingType.FIFO)
                 .writeDebugLogs() // Remove for release app
+                .threadPoolSize(5)
                 .build();
 
         ImageLoader.getInstance().init(imlConfig);
@@ -191,8 +192,13 @@ public class WPCore {
 
     //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
     public static void setBackGround(String imagePath, Context context) {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .imageScaleType(ImageScaleType.IN_SAMPLE_INT) // 스케일타입설정
+                .bitmapConfig(Bitmap.Config.ARGB_8888) // 이미지 컬러방식
+                .build();
+
         WallpaperManager myWallpaperManager = WallpaperManager.getInstance(context);
-        Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
+        Bitmap wallPaperImage = ImageLoader.getInstance().loadImageSync(imagePath, options);
         try {
             myWallpaperManager.setBitmap(wallPaperImage);
         } catch (IOException e) {
