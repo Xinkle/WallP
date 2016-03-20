@@ -46,14 +46,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int PICK_PICTURE = 1;
 
-    @FragmentById(R.id.PictureInformationFragment)
-    InformationFragment mPictureInformationFragment;
-    @FragmentById(R.id.IntervalFragment)
-    InformationFragment mIntervalFragment;
+    @FragmentById(R.id.picture_information_fragment)
+    public InformationFragment mPictureInformationFragment;
+    @FragmentById(R.id.interval_information_fragment)
+    public InformationFragment mIntervalFragment;
     @FragmentById(R.id.wallpaper_switch_fragment)
-    WallpaperSwtichFragment mWallpaperSwitchFragment;
+    public WallpaperSwtichFragment mWallpaperSwitchFragment;
     @FragmentById(R.id.wallpeper_fragment)
-    WallpaperFragment mWallpaperFragment;
+    public WallpaperFragment mWallpaperFragment;
 
     String mImageFilePath;
 
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     protected void updateImageView(String result) {
         //mWallpaperFragment.setImageView(result);
         mWallpaperSwitchFragment.addWallpaper(result);
-        mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperPaths().size());
+        //mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperPaths().size());
     }
 
     //**************************파일 복사를 위한 메소드*************************************************

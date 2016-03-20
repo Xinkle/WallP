@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
-        android:id="@+id/PictureInformationFragment"
+        android:id="@+id/picture_information_fragment"
         android:layout_weight="1"
         tools:layout="@layout/information_fragment"/>
 
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
-        android:id="@+id/IntervalFragment"
+        android:id="@+id/interval_information_fragment"
         android:layout_weight="1"
         tools:layout="@layout/information_fragment"/>
 </LinearLayout>
