@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
@@ -19,6 +20,8 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.pachalenlabs.wallp.R;
 
 import org.apache.log4j.Logger;
@@ -180,23 +183,36 @@ public class WPCore {
         ImageLoaderConfiguration imlConfig;
         imlConfig = new ImageLoaderConfiguration.Builder(context)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                //.denyCacheImageMultipleSizesInMemory()
+                .tasksProcessingOrder(QueueProcessingType.FIFO)
                 .writeDebugLogs() // Remove for release app
+                .threadPoolSize(5)
                 .build();
 
         ImageLoader.getInstance().init(imlConfig);
     }
 
     //************************  핸드폰 배경으로 설정해주는 소스  *****************************************
-    public static void setBackGround(String imagePath, Context context) {
-        WallpaperManager myWallpaperManager = WallpaperManager.getInstance(context);
-        Bitmap wallPaperImage = BitmapFactory.decodeFile(imagePath);
-        try {
-            myWallpaperManager.setBitmap(wallPaperImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void setBackGround(String imagePath, final Context context) {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .imageScaleType(ImageScaleType.IN_SAMPLE_INT) // 스케일타입설정
+                .bitmapConfig(Bitmap.Config.ARGB_8888) // 이미지 컬러방식
+                .build();
+
+        ImageLoader.getInstance().loadImage(imagePath, options, new SimpleImageLoadingListener(){
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                super.onLoadingComplete(imageUri, view, loadedImage);
+                try {
+                    WallpaperManager myWallpaperManager = WallpaperManager.getInstance(context);
+                    myWallpaperManager.setBitmap(loadedImage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**

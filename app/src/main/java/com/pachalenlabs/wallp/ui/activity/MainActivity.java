@@ -24,6 +24,8 @@ import android.widget.EditText;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.module.WPCore;
+import com.pachalenlabs.wallp.module.WPService;
+import com.pachalenlabs.wallp.module.WPService_;
 import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
 import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
 import com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment;
@@ -64,19 +66,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, PICK_PICTURE);
-            }
-        });
-        */
-
         mPictureInformationFragment.setDescription(getResources().getString(R.string.picture_information));
         mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperPaths().size());
         View.OnClickListener PictureOnInformationButtonClick = new View.OnClickListener() {
@@ -96,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         mIntervalFragment.setClickListenerToLayout(ExchangeOnInformationButtonClick);
+
+        // Start Service
+        WPService_.intent(getApplicationContext())
+                .extra("runState", WPService.START)
+                .start();
     }
 
     @Override
@@ -190,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
                         logger.debug("Interval set to " + intervalText.getText().toString());
                         WPCore.getInstance().saveData();
                         mIntervalFragment.setValue(WPCore.getAppData().getTimeInterval());
+                        WPService_.intent(getApplicationContext())
+                                .extra("runState", WPService.START)
+                                .start();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -14,21 +14,24 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/informationFrag_description"
         android:layout_weight="5"
-        android:textColor="#faf4f4" />
+        android:textColor="#faf4f4"
+        android:layout_gravity="center"
+        android:textAlignment="center" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/informationFrag_value"
-        android:layout_gravity="center_horizontal"
         android:layout_weight="4"
-        android:textColor="#faf4f4" />
+        android:textColor="#faf4f4"
+        android:layout_gravity="center"
+        android:textAlignment="center" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/informationFrag_icon_imageButton"
         android:background="@android:drawable/ic_dialog_info"
-        android:layout_gravity="end"/>
+        android:layout_gravity="center"/>
 </LinearLayout>

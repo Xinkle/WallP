@@ -51,7 +51,7 @@ public class WallpaperFragment extends Fragment {
 
     @AfterViews
     public void setupViews() {
-        WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.test_wallpaper);
+        WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.logo);
     }
 
     public void setLodingImageView() {
