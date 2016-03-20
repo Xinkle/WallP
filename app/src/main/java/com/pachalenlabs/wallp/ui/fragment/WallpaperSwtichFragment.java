@@ -30,6 +30,7 @@ public class WallpaperSwtichFragment extends Fragment {
     LinearLayout mWallpapaerScrollLayout;
 
     WallpaperFragment mWallpaperFragment;
+    InformationFragment mPictureInformationFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class WallpaperSwtichFragment extends Fragment {
     @AfterViews
     void setupView() {
         mWallpaperFragment = (WallpaperFragment) getFragmentManager().findFragmentById(R.id.wallpeper_fragment);
+        mPictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.picture_information_fragment);
         showAllWallpaper();
     }
 
@@ -55,6 +57,7 @@ public class WallpaperSwtichFragment extends Fragment {
         WPCore.getInstance().saveData();
         showWallpaper(filePath);
         mWallpapaerScrollLayout.requestLayout();
+        mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperPaths().size());
     }
 
     @UiThread
