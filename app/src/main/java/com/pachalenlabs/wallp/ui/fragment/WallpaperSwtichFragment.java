@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.module.WPCore;
+import com.pachalenlabs.wallp.ui.activity.MainActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -29,9 +30,6 @@ public class WallpaperSwtichFragment extends Fragment {
     @ViewById(R.id.wallpaper_scroll_layout)
     LinearLayout mWallpapaerScrollLayout;
 
-    WallpaperFragment mWallpaperFragment;
-    InformationFragment mPictureInformationFragment;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +44,6 @@ public class WallpaperSwtichFragment extends Fragment {
 
     @AfterViews
     void setupView() {
-        mWallpaperFragment = (WallpaperFragment) getFragmentManager().findFragmentById(R.id.wallpeper_fragment);
-        mPictureInformationFragment = (InformationFragment) getFragmentManager().findFragmentById(R.id.picture_information_fragment);
         showAllWallpaper();
     }
 
@@ -57,7 +53,7 @@ public class WallpaperSwtichFragment extends Fragment {
         WPCore.getInstance().saveData();
         showWallpaper(filePath);
         mWallpapaerScrollLayout.requestLayout();
-        mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperPaths().size());
+        ((MainActivity)getActivity()).mPictureInformationFragment.setValue(WPCore.getAppData().getWallpaperPaths().size());
     }
 
     @UiThread
@@ -75,8 +71,7 @@ public class WallpaperSwtichFragment extends Fragment {
         imgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageView iv = (ImageView) v;
-                mWallpaperFragment.setImageView(filePath);
+                ((MainActivity)getActivity()).mWallpaperFragment.setImageView(filePath);
             }
         });
         logger.info("Wallpaper Added!");

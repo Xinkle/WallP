@@ -47,13 +47,13 @@ public class MainActivity extends AppCompatActivity {
     public static final int PICK_PICTURE = 1;
 
     @FragmentById(R.id.picture_information_fragment)
-    InformationFragment mPictureInformationFragment;
+    public InformationFragment mPictureInformationFragment;
     @FragmentById(R.id.interval_information_fragment)
-    InformationFragment mIntervalFragment;
+    public InformationFragment mIntervalFragment;
     @FragmentById(R.id.wallpaper_switch_fragment)
-    WallpaperSwtichFragment mWallpaperSwitchFragment;
+    public WallpaperSwtichFragment mWallpaperSwitchFragment;
     @FragmentById(R.id.wallpeper_fragment)
-    WallpaperFragment mWallpaperFragment;
+    public WallpaperFragment mWallpaperFragment;
 
     String mImageFilePath;
 
