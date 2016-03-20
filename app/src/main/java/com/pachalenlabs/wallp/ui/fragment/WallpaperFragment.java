@@ -53,6 +53,7 @@ public class WallpaperFragment extends Fragment {
     public void setupViews() {
         WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.test_wallpaper);
     }
+
     public void setLodingImageView() {
         WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.copylodingimage);
     }
@@ -64,16 +65,28 @@ public class WallpaperFragment extends Fragment {
 
     @Click(R.id.cancel_imageButton)
     void cancelViewClicked() {
+        int index = WPCore.getAppData().index;
         WPCore.getAppData().cancelButtonClicked();
-        ((MainActivity)getActivity()).mWallpaperSwitchFragment.removeWallpaper();}
+        ((MainActivity)getActivity()).mWallpaperSwitchFragment.removeWallpaper(index);
+    }
 
     @Click(R.id.right_imageButton)
     void rightClicked() {
-        WPCore.getAppData().rightButtonClicked();
-        ((MainActivity)getActivity()).mWallpaperSwitchFragment.updateWallpaper();}
+        int index = WPCore.getAppData().index;
+        if ( index+1 <WPCore.getAppData().mWallpaperPaths.size()) {
+            ((MainActivity) getActivity()).mWallpaperSwitchFragment.removeWallpaper(index);
+            ((MainActivity) getActivity()).mWallpaperSwitchFragment.addWallpaper(index+1);
+            WPCore.getAppData().rightButtonClicked();
+        }
+    }
 
     @Click(R.id.left_imageButton)
-    void leftViewClicked() {
-        WPCore.getAppData().leftButtonClicked();
-        ((MainActivity)getActivity()).mWallpaperSwitchFragment.updateWallpaper();}
+    void leftViewClicked(){
+        int index = WPCore.getAppData().index;
+        if (WPCore.getAppData().index - 1 > -1) {
+            ((MainActivity) getActivity()).mWallpaperSwitchFragment.addWallpaper(index-1);
+            ((MainActivity) getActivity()).mWallpaperSwitchFragment.removeWallpaper(index+1);
+            WPCore.getAppData().leftButtonClicked();
+        }
+    }
 }

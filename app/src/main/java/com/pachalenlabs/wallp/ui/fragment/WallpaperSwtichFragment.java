@@ -86,14 +86,32 @@ public class WallpaperSwtichFragment extends Fragment {
         }
     }
 
-    @UiThread
-    public void updateWallpaper(){
-        mWallpapaerScrollLayout.removeAllViews();
-        showAllWallpaper();
-    }
 
     @UiThread
-    public void removeWallpaper(){
-        mWallpapaerScrollLayout.removeViewAt(WPCore.getAppData().index);
+    public void removeWallpaper(int index){
+        mWallpapaerScrollLayout.removeViewAt(index);
+    }
+    @UiThread
+    public void addWallpaper(int index){
+        ImageView imgView = new ImageView(getActivity());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.MATCH_PARENT, 0.0F);
+        int imageMargin = WPCore.getPixelValue(getActivity(), R.dimen.wallpeper_switch_margin);
+        Log.d("WallP", "Pixel : " + imageMargin + " Dimen : " + getResources().getDimension(R.dimen.wallpeper_switch_margin));
+        params.setMargins(imageMargin, imageMargin, imageMargin, imageMargin);
+        imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imgView.setLayoutParams(params);
+
+        WPCore.setImageToView(imgView, "file://" +WPCore.getAppData().mWallpaperPaths.get(WPCore.getAppData().index));
+
+        final String tmpPath = WPCore.getAppData().mWallpaperPaths.get(WPCore.getAppData().index);
+        imgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).mWallpaperFragment.setImageView(WPCore.getAppData().mWallpaperPaths.get(WPCore.getAppData().index));
+                WPCore.getAppData().setCurrentWallpaper(tmpPath);
+            }
+        });
+        logger.info("Wallpaper Added!");
+        mWallpapaerScrollLayout.addView(imgView,index);
     }
 }

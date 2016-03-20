@@ -243,7 +243,7 @@ public class WPCore {
             if(nextWallpaper >= mWallpaperPaths.size())
                 this.mNextWallpaper = 0;
             else
-               this.mNextWallpaper = nextWallpaper;
+                this.mNextWallpaper = nextWallpaper;
         }
 
 
@@ -251,6 +251,7 @@ public class WPCore {
             for(int i = 0 ; i < mWallpaperPaths.size() ; i++){
                 if( imagePath.equals(mWallpaperPaths.get(i)) ) index = i;
             }
+            Log.d("ddd","@@@@@"+"번호는 :"+ index);
         }
 
         public void rightButtonClicked() {
@@ -263,16 +264,13 @@ public class WPCore {
             }
         }
         public void leftButtonClicked(){
-            if(index-1  != -1 ){
-                mWallpaperPaths.add(index-1,mWallpaperPaths.get(index));
-                mWallpaperPaths.remove(index+1);
-                index = index - 1;
-            }
+            mWallpaperPaths.add(index-1,mWallpaperPaths.get(index));
+            mWallpaperPaths.remove(index+1);
+            index = index - 1;
         }
 
         public void cancelButtonClicked(){
             mWallpaperPaths.remove(index);
-
         }
 
         public WPData() {
