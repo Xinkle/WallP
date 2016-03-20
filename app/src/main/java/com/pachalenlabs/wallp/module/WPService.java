@@ -34,8 +34,8 @@ public class WPService extends Service {
     /* Service Running Indicator*/
     public static boolean IS_SERVICE_RUNNING = false;
 
-    private Timer mWallpaperTimer;
-    private WallpaperTask mWallpaperTask;
+    private static Timer mWallpaperTimer;
+    private static WallpaperTask mWallpaperTask;
 
     class WallpaperTask extends TimerTask {
         @Override
