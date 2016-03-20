@@ -55,8 +55,8 @@ public class WallpaperFragment extends Fragment {
     }
     public void setLodingImageView() {
         WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.copylodingimage);
-
     }
+
     @UiThread
     public void setImageView(String imagePath) {
         WPCore.setImageToView(_selectedPhotoImageView, "file://" + imagePath);
@@ -65,19 +65,15 @@ public class WallpaperFragment extends Fragment {
     @Click(R.id.cancel_imageButton)
     void cancelViewClicked() {
         WPCore.getAppData().cancelButtonClicked();
-        ((MainActivity)getActivity()).updateImageSwichFrament();
-    }
+        ((MainActivity)getActivity()).mWallpaperSwitchFragment.updateWallpaper();}
 
     @Click(R.id.right_imageButton)
     void rightClicked() {
         WPCore.getAppData().rightButtonClicked();
-        ((MainActivity)getActivity()).updateImageSwichFrament();
-    }
+        ((MainActivity)getActivity()).mWallpaperSwitchFragment.updateWallpaper();}
 
     @Click(R.id.left_imageButton)
     void leftViewClicked() {
         WPCore.getAppData().leftButtonClicked();
-        ((MainActivity)getActivity()).updateImageSwichFrament();
-
-    }
+        ((MainActivity)getActivity()).mWallpaperSwitchFragment.updateWallpaper();}
 }

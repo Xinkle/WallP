@@ -43,7 +43,7 @@ public class WallpaperSwtichFragment extends Fragment {
     }
 
     @AfterViews
-    public void setupView() {
+    void setupView() {
         showAllWallpaper();
     }
 
@@ -90,5 +90,10 @@ public class WallpaperSwtichFragment extends Fragment {
     public void updateWallpaper(){
         mWallpapaerScrollLayout.removeAllViews();
         showAllWallpaper();
+    }
+
+    @UiThread
+    public void removeWallpaper(){
+        mWallpapaerScrollLayout.removeViewAt(WPCore.getAppData().index);
     }
 }

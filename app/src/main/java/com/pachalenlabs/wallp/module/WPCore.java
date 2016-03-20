@@ -205,7 +205,7 @@ public class WPCore {
     public class WPData {
         // List of Wallpaper
         public ArrayList<String> mWallpaperPaths;
-        private int index=0;
+        public int index=0;
         public ArrayList<String> getWallpaperPaths() {
             return mWallpaperPaths;
         }
@@ -266,12 +266,13 @@ public class WPCore {
             if(index-1  != -1 ){
                 mWallpaperPaths.add(index-1,mWallpaperPaths.get(index));
                 mWallpaperPaths.remove(index+1);
-                index = index-1;
+                index = index - 1;
             }
         }
 
         public void cancelButtonClicked(){
             mWallpaperPaths.remove(index);
+
         }
 
         public WPData() {
