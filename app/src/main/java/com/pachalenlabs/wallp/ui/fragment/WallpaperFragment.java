@@ -65,7 +65,7 @@ public class WallpaperFragment extends Fragment {
     @Click(R.id.cancel_imageButton)
     void cancelViewClicked() {
         WPCore.getAppData().cancelButtonClicked();
-        ((MainActivity)getActivity()).mWallpaperSwitchFragment.updateWallpaper();}
+        ((MainActivity)getActivity()).mWallpaperSwitchFragment.removeWallpaper();}
 
     @Click(R.id.right_imageButton)
     void rightClicked() {
