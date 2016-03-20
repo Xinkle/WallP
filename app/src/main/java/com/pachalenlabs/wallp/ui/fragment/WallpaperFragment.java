@@ -1,10 +1,7 @@
 package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +10,7 @@ import android.widget.ImageView;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.module.WPCore;
+import com.pachalenlabs.wallp.ui.activity.MainActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -38,6 +36,7 @@ public class WallpaperFragment extends Fragment {
     @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedPhotoImageView;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +49,10 @@ public class WallpaperFragment extends Fragment {
         return inflater.inflate(R.layout.wallpaper_fragment, container, false);
     }
 
-    @AfterViews
-    public void setupViews() {
-        WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.copylodingimage);
-    }
+        @AfterViews
+        public void setupViews() {
+            WPCore.setImageToView(_selectedPhotoImageView, "drawable://" + R.drawable.copylodingimage);
+        }
 
     @UiThread
     public void setImageView(String imagePath) {
@@ -61,17 +60,29 @@ public class WallpaperFragment extends Fragment {
     }
 
     @Click(R.id.cancel_imageButton)
-    void leftViewClicked() {
-        Log.d(Tag, "1");
+    void cancelViewClicked() {
+        int index = WPCore.getAppData().index;
+        WPCore.getAppData().cancelButtonClicked();
+        ((MainActivity)getActivity()).mWallpaperSwitchFragment.removeWallpaper(index);
     }
 
     @Click(R.id.right_imageButton)
-    void cancelClicked() {
-        Log.d(Tag, "2");
+    void rightClicked() {
+        int index = WPCore.getAppData().index;
+        if ( index+1 <WPCore.getAppData().mWallpaperPaths.size()) {
+            ((MainActivity) getActivity()).mWallpaperSwitchFragment.removeWallpaper(index);
+            ((MainActivity) getActivity()).mWallpaperSwitchFragment.addWallpaper(index+1);
+            WPCore.getAppData().rightButtonClicked();
+        }
     }
 
     @Click(R.id.left_imageButton)
-    void rightViewClicked() {
-        Log.d(Tag, "3");
+    void leftViewClicked(){
+        int index = WPCore.getAppData().index;
+        if (WPCore.getAppData().index - 1 > -1) {
+            ((MainActivity) getActivity()).mWallpaperSwitchFragment.addWallpaper(index-1);
+            ((MainActivity) getActivity()).mWallpaperSwitchFragment.removeWallpaper(index+1);
+            WPCore.getAppData().leftButtonClicked();
+        }
     }
 }
