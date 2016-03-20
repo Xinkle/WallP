@@ -76,6 +76,7 @@ public class WallpaperSwtichFragment extends Fragment {
         });
         logger.info("Wallpaper Added!");
         mWallpapaerScrollLayout.addView(imgView);
+
     }
 
     @UiThread

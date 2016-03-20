@@ -29,7 +29,7 @@ public class WPApp extends Application {
         WPCore.imageLoaderConfig(this);
         WPCore.getInstance().loadData();
         WPService_.intent(getApplicationContext())
-                .extra("runState", WPService.START)
+                .extra("runState", WPService.INIT)
                 .start();
         logger.info("App Initialized!!");
     }

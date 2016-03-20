@@ -85,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         mIntervalFragment.setClickListenerToLayout(ExchangeOnInformationButtonClick);
+
+        // Start Service
+        WPService_.intent(getApplicationContext())
+                .extra("runState", WPService.START)
+                .start();
     }
 
     @Override
