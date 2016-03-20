@@ -30,7 +30,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 
@@ -206,7 +205,7 @@ public class WPCore {
     public class WPData {
         // List of Wallpaper
         public ArrayList<String> mWallpaperPaths;
-
+        private int index=0;
         public ArrayList<String> getWallpaperPaths() {
             return mWallpaperPaths;
         }
@@ -245,6 +244,34 @@ public class WPCore {
                 this.mNextWallpaper = 0;
             else
                this.mNextWallpaper = nextWallpaper;
+        }
+
+
+        public void setCurrentWallpaper(String imagePath){
+            for(int i = 0 ; i < mWallpaperPaths.size() ; i++){
+                if( imagePath.equals(mWallpaperPaths.get(i)) ) index = i;
+            }
+        }
+
+        public void rightButtonClicked() {
+            String tmpPath;
+            if ( index+1 < mWallpaperPaths.size()){
+                tmpPath = mWallpaperPaths.get(index);
+                mWallpaperPaths.remove(index);
+                mWallpaperPaths.add(index + 1, tmpPath);
+                index = index + 1;
+            }
+        }
+        public void leftButtonClicked(){
+            if(index-1  != -1 ){
+                mWallpaperPaths.add(index-1,mWallpaperPaths.get(index));
+                mWallpaperPaths.remove(index+1);
+                index = index-1;
+            }
+        }
+
+        public void cancelButtonClicked(){
+            mWallpaperPaths.remove(index);
         }
 
         public WPData() {

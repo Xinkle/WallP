@@ -1,10 +1,7 @@
 package com.pachalenlabs.wallp.ui.fragment;
 
 import android.app.Fragment;
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +10,7 @@ import android.widget.ImageView;
 
 import com.pachalenlabs.wallp.R;
 import com.pachalenlabs.wallp.module.WPCore;
+import com.pachalenlabs.wallp.ui.activity.MainActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -37,6 +35,7 @@ public class WallpaperFragment extends Fragment {
     ImageButton _rightImageButton;
     @ViewById(R.id.show_selected_photo_imageView)
     ImageView _selectedPhotoImageView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,17 +63,21 @@ public class WallpaperFragment extends Fragment {
     }
 
     @Click(R.id.cancel_imageButton)
-    void leftViewClicked() {
-        Log.d(Tag, "1");
+    void cancelViewClicked() {
+        WPCore.getAppData().cancelButtonClicked();
+        ((MainActivity)getActivity()).updateImageSwichFrament();
     }
 
     @Click(R.id.right_imageButton)
-    void cancelClicked() {
-        Log.d(Tag, "2");
+    void rightClicked() {
+        WPCore.getAppData().rightButtonClicked();
+        ((MainActivity)getActivity()).updateImageSwichFrament();
     }
 
     @Click(R.id.left_imageButton)
-    void rightViewClicked() {
-        Log.d(Tag, "3");
+    void leftViewClicked() {
+        WPCore.getAppData().leftButtonClicked();
+        ((MainActivity)getActivity()).updateImageSwichFrament();
+
     }
 }

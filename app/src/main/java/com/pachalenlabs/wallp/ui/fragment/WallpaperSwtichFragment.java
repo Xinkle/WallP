@@ -43,7 +43,7 @@ public class WallpaperSwtichFragment extends Fragment {
     }
 
     @AfterViews
-    void setupView() {
+    public void setupView() {
         showAllWallpaper();
     }
 
@@ -72,6 +72,7 @@ public class WallpaperSwtichFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((MainActivity)getActivity()).mWallpaperFragment.setImageView(filePath);
+                WPCore.getAppData().setCurrentWallpaper(filePath);
             }
         });
         logger.info("Wallpaper Added!");
@@ -85,4 +86,9 @@ public class WallpaperSwtichFragment extends Fragment {
         }
     }
 
+    @UiThread
+    public void updateWallpaper(){
+        mWallpapaerScrollLayout.removeAllViews();
+        showAllWallpaper();
+    }
 }

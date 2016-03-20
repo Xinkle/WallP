@@ -234,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+    public void updateImageSwichFrament(){  mWallpaperSwitchFragment.updateWallpaper();  }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
