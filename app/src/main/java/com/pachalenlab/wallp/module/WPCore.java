@@ -1,10 +1,9 @@
-package com.pachalenlabs.wallp.module;
+package com.pachalenlab.wallp.module;
 
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
@@ -20,9 +19,8 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.pachalenlabs.wallp.R;
+import com.pachalenlab.wallp.R;
 
 import org.apache.log4j.Logger;
 
@@ -280,9 +278,11 @@ public class WPCore {
             }
         }
         public void leftButtonClicked(){
-            mWallpaperPaths.add(index-1,mWallpaperPaths.get(index));
-            mWallpaperPaths.remove(index+1);
-            index = index - 1;
+            if(index -1 > -1) {
+                mWallpaperPaths.add(index - 1, mWallpaperPaths.get(index));
+                mWallpaperPaths.remove(index + 1);
+                index = index - 1;
+            }
         }
 
         public void cancelButtonClicked(){

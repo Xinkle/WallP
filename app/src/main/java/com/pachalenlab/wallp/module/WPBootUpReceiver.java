@@ -1,4 +1,4 @@
-package com.pachalenlabs.wallp.module;
+package com.pachalenlab.wallp.module;
 
 import android.content.Context;
 import android.content.Intent;

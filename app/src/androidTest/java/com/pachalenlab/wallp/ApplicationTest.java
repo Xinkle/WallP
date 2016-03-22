@@ -1,4 +1,4 @@
-package com.pachalenlabs.wallp;
+package com.pachalenlab.wallp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
