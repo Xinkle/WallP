@@ -1,4 +1,4 @@
-package com.pachalenlabs.wallp.ui.fragment;
+package com.pachalenlab.wallp.ui.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -9,8 +9,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.pachalenlabs.wallp.R;
-import com.pachalenlabs.wallp.module.WPCore;
+import com.pachalenlab.wallp.R;
 
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;

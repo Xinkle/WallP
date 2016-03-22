@@ -1,4 +1,4 @@
-package com.pachalenlabs.wallp;
+package com.pachalenlab.wallp;
 
 import org.junit.Test;
 

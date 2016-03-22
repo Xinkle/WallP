@@ -1,9 +1,9 @@
-package com.pachalenlabs.wallp.module;
+package com.pachalenlab.wallp.module;
 
 import android.content.Context;
 import android.os.Environment;
 
-import com.pachalenlabs.wallp.R;
+import com.pachalenlab.wallp.R;
 
 import org.apache.log4j.Level;
 

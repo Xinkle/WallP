@@ -31,7 +31,7 @@ dependencies {
 apt {
     arguments {
         androidManifestFile variant.outputs[0]?.processResources?.manifestFile
-        resourcePackageName "com.pachalenlabs.wallp"
+        resourcePackageName "com.pachalenlab.wallp"
         library 'true'
         // if you have multiple outputs (when using splits), you may want to have other index than 0
 
@@ -50,7 +50,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.pachalenlabs.wallp"
+        applicationId "com.pachalenlab.wallp"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1

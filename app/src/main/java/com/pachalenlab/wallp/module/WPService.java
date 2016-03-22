@@ -1,4 +1,4 @@
-package com.pachalenlabs.wallp.module;
+package com.pachalenlab.wallp.module;
 
 import android.annotation.SuppressLint;
 import android.app.Service;

@@ -1,4 +1,4 @@
-package com.pachalenlabs.wallp.ui.fragment;
+package com.pachalenlab.wallp.ui.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.pachalenlabs.wallp.R;
-import com.pachalenlabs.wallp.module.WPCore;
-import com.pachalenlabs.wallp.ui.activity.MainActivity;
+import com.pachalenlab.wallp.R;
+import com.pachalenlab.wallp.module.WPCore;
+import com.pachalenlab.wallp.ui.activity.MainActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;

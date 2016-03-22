@@ -1,4 +1,4 @@
-package com.pachalenlabs.wallp.ui.activity;
+package com.pachalenlab.wallp.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -22,13 +22,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import com.pachalenlabs.wallp.R;
-import com.pachalenlabs.wallp.module.WPCore;
-import com.pachalenlabs.wallp.module.WPService;
-import com.pachalenlabs.wallp.module.WPService_;
-import com.pachalenlabs.wallp.ui.fragment.InformationFragment;
-import com.pachalenlabs.wallp.ui.fragment.WallpaperFragment;
-import com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment;
+import com.pachalenlab.wallp.R;
+import com.pachalenlab.wallp.module.WPCore;
+import com.pachalenlab.wallp.module.WPService;
+import com.pachalenlab.wallp.module.WPService_;
+import com.pachalenlab.wallp.ui.fragment.InformationFragment;
+import com.pachalenlab.wallp.ui.fragment.WallpaperFragment;
+import com.pachalenlab.wallp.ui.fragment.WallpaperSwtichFragment;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;

@@ -1,13 +1,12 @@
-package com.pachalenlabs.wallp;
+package com.pachalenlab.wallp;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.util.Log;
 
-import com.pachalenlabs.wallp.module.WPCore;
-import com.pachalenlabs.wallp.module.WPLogger;
-import com.pachalenlabs.wallp.module.WPService;
-import com.pachalenlabs.wallp.module.WPService_;
+import com.pachalenlab.wallp.module.WPCore;
+import com.pachalenlab.wallp.module.WPLogger;
+import com.pachalenlab.wallp.module.WPService;
+import com.pachalenlab.wallp.module.WPService_;
 
 import org.androidannotations.annotations.EApplication;
 import org.apache.log4j.Logger;

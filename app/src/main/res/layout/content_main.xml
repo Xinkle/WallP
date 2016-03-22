@@ -13,7 +13,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="com.pachalenlabs.wallp.ui.fragment.WallpaperFragment_"
+        android:name="com.pachalenlab.wallp.ui.fragment.WallpaperFragment_"
         android:id="@+id/wallpeper_fragment"
         android:layout_weight="5"
         tools:layout="@layout/wallpaper_fragment" />
@@ -22,7 +22,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="com.pachalenlabs.wallp.ui.fragment.WallpaperSwtichFragment_"
+        android:name="com.pachalenlab.wallp.ui.fragment.WallpaperSwtichFragment_"
         android:id="@+id/wallpaper_switch_fragment"
         android:layout_weight="3"
         tools:layout="@layout/wallpaper_switch_fragment"/>
@@ -30,7 +30,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
+        android:name="com.pachalenlab.wallp.ui.fragment.InformationFragment_"
         android:id="@+id/picture_information_fragment"
         android:layout_weight="1"
         tools:layout="@layout/information_fragment"/>
@@ -38,7 +38,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="com.pachalenlabs.wallp.ui.fragment.InformationFragment_"
+        android:name="com.pachalenlab.wallp.ui.fragment.InformationFragment_"
         android:id="@+id/interval_information_fragment"
         android:layout_weight="1"
         tools:layout="@layout/information_fragment"/>
