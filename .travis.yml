@@ -6,4 +6,5 @@ android:
     - android-23
 
 script:
+   - ./sudo chmod +x gradlew
    - ./gradlew build connectedCheck
