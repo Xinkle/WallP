@@ -32,4 +32,10 @@ public class WPApp extends Application {
                 .start();
         logger.info("App Initialized!!");
     }
+
+    @Override
+    public void onTerminate() {
+        logger.info("App Terminated!!");
+        super.onTerminate();
+    }
 }

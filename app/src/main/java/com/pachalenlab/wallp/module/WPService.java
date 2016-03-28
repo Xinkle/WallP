@@ -1,6 +1,7 @@
 package com.pachalenlab.wallp.module;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -31,11 +32,83 @@ public class WPService extends Service {
     public static final int START = 2;
     public static final int STOP = 3;
 
+    public enum Action{
+        START, STOP
+    }
+
+    public enum State{
+        INIT{
+            public State act(Action action){
+                switch (action){
+                    case START:
+                        return RUNNING;
+                    default:
+                        return null;
+                }
+            }
+
+            @Override
+            public void onEntry() {
+                super.onEntry();
+            }
+        },
+        SUSPEND{
+            public State act(Action action){
+                switch(action){
+                    case START:
+                        return RUNNING;
+                    default:
+                        return null;
+                }
+            }
+
+            @Override
+            public void onEntry() {
+                super.onEntry();
+                logger.info("Start Service");
+                final int INTERVEL_IN_MINIUTE = WPCore.getAppData().getTimeInterval();
+
+                mWallpaperTimer = new Timer();
+                mWallpaperTask = new WallpaperTask();
+                mWallpaperTimer.schedule(mWallpaperTask, 0, INTERVEL_IN_MINIUTE * 60 * 1000);
+
+                logger.info("Run Timer, Interval = " + INTERVEL_IN_MINIUTE + "min");
+
+                IS_SERVICE_RUNNING = true;
+            }
+        },
+        RUNNING{
+            public State act(Action action){
+                switch (action){
+                    case START:
+                        return RUNNING;
+                    case STOP:
+                        return SUSPEND;
+                    default:
+                        return null;
+                }
+            }
+
+            @Override
+            public void onEntry() {
+                super.onEntry();
+            }
+        };
+        private static final Logger logger = Logger.getLogger(State.class);
+        abstract State act(Action action);
+        public static State getInitState(){
+            return INIT;
+        }
+        private static Timer mWallpaperTimer;
+        private static WallpaperTask mWallpaperTask;
+
+        public void onEntry(){}
+        public void onExit(){}
+    }
     /* Service Running Indicator*/
     public static boolean IS_SERVICE_RUNNING = false;
 
-    private static Timer mWallpaperTimer;
-    private static WallpaperTask mWallpaperTask;
+    private State currentState;
 
     class WallpaperTask extends TimerTask {
         @Override
@@ -51,16 +124,7 @@ public class WPService extends Service {
     }
 
     private void startWPService() {
-        logger.info("Start Service");
-        final int INTERVEL_IN_MINIUTE = WPCore.getAppData().getTimeInterval();
 
-        mWallpaperTimer = new Timer();
-        mWallpaperTask = new WallpaperTask();
-        mWallpaperTimer.schedule(mWallpaperTask, 0, INTERVEL_IN_MINIUTE * 60 * 1000);
-
-        logger.info("Run Timer, Interval = " + INTERVEL_IN_MINIUTE + "min");
-
-        IS_SERVICE_RUNNING = true;
     }
 
     private void stopWPService() {
@@ -129,6 +193,10 @@ public class WPService extends Service {
         super.onCreate();
         logger.info("onCreate Start");
         serviceToast("WP Service Created!!");
+
+        // Init Service
+        currentState = State.getInitState();
+
         logger.info("onCreate End");
     }
 

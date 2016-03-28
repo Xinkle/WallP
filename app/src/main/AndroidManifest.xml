@@ -41,6 +41,15 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".module.WPWallpaperReceiver"
+            android:enabled="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.WALLPAPER_CHANGED"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
