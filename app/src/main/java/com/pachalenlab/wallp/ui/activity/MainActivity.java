@@ -24,8 +24,6 @@ import android.widget.EditText;
 
 import com.pachalenlab.wallp.R;
 import com.pachalenlab.wallp.module.WPCore;
-import com.pachalenlab.wallp.module.WPService;
-import com.pachalenlab.wallp.module.WPService_;
 import com.pachalenlab.wallp.ui.fragment.InformationFragment;
 import com.pachalenlab.wallp.ui.fragment.WallpaperFragment;
 import com.pachalenlab.wallp.ui.fragment.WallpaperSwtichFragment;
@@ -87,9 +85,11 @@ public class MainActivity extends AppCompatActivity {
         mIntervalFragment.setClickListenerToLayout(ExchangeOnInformationButtonClick);
 
         // Start Service
+        /*
         WPService_.intent(getApplicationContext())
                 .extra("runState", WPService.START)
                 .start();
+                */
     }
 
     @Override
@@ -184,9 +184,7 @@ public class MainActivity extends AppCompatActivity {
                         logger.debug("Interval set to " + intervalText.getText().toString());
                         WPCore.getInstance().saveData();
                         mIntervalFragment.setValue(WPCore.getAppData().getTimeInterval());
-                        WPService_.intent(getApplicationContext())
-                                .extra("runState", WPService.START)
-                                .start();
+                        WPCore.scheduleWallpaperAlarm(getApplicationContext(), WPCore.getAppData().getTimeInterval());
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
