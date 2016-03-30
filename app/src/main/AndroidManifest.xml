@@ -23,14 +23,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name="com.pachalenlab.wallp.module.WPService_"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.pachalenlabs.wallp.module.WPService"/>
-            </intent-filter>
-        </service>
-
         <receiver
             android:name="com.pachalenlab.wallp.module.WPBootUpReceiver"
             android:enabled="true"
@@ -45,9 +37,6 @@
             android:name=".module.WPWallpaperReceiver"
             android:enabled="true"
             android:process=":remote">
-            <intent-filter>
-                <action android:name="android.intent.action.WALLPAPER_CHANGED"/>
-            </intent-filter>
         </receiver>
 
     </application>

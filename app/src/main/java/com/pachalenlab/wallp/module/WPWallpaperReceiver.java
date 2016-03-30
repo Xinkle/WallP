@@ -14,8 +14,6 @@ public class WPWallpaperReceiver extends BroadcastReceiver {
     private final Logger logger = Logger.getLogger(WPWallpaperReceiver.class);
 
     public static final int REQ_CODE = 31923;
-    public static final String WALLPAPER_ACTION = "com.pachalenlab.wallp.changewallpaper";
-
 
     @Override
     public void onReceive(Context context, Intent intent) {

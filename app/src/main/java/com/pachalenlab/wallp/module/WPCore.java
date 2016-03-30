@@ -1,7 +1,10 @@
 package com.pachalenlab.wallp.module;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Environment;
@@ -213,6 +216,21 @@ public class WPCore {
         });
     }
 
+    public static void scheduleWallpaperAlarm(Context srcContext, int intervalMills){
+        logger.info("Scheduling, Interval : " + intervalMills);
+        // Construct an intent that will execute the AlarmReceiver
+        Intent intent = new Intent(srcContext, WPWallpaperReceiver.class);
+        // Create a PendingIntent to be triggered when the alarm goes off
+        final PendingIntent pIntent = PendingIntent.getBroadcast(srcContext, WPWallpaperReceiver.REQ_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Setup periodic alarm every 5 seconds
+        long firstMillis = System.currentTimeMillis(); // alarm is set right away
+        AlarmManager alarm = (AlarmManager) srcContext.getSystemService(Context.ALARM_SERVICE);
+        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
+        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+                new Integer(intervalMills * 60 * 1000).longValue(), pIntent);
+    }
     /**
      * Data Class
      */

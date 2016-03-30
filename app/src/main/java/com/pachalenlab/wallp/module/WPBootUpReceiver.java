@@ -17,12 +17,16 @@ public class WPBootUpReceiver extends AbstractBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+        logger.info("Boot Up");
+        /*
         if(intent.getAction().equals("android.intent.action.BOOT_COMPLETED")){
             logger.info("Boot Received!");
             WPService_.intent(context)
                     .extra("runState", WPService.INIT)
                     .start();
-            logger.info("App Initialized!!");
+
+
         }
+        */
     }
 }

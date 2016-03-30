@@ -5,8 +5,6 @@ import android.app.Application;
 
 import com.pachalenlab.wallp.module.WPCore;
 import com.pachalenlab.wallp.module.WPLogger;
-import com.pachalenlab.wallp.module.WPService;
-import com.pachalenlab.wallp.module.WPService_;
 
 import org.androidannotations.annotations.EApplication;
 import org.apache.log4j.Logger;
@@ -27,9 +25,12 @@ public class WPApp extends Application {
         WPCore.getInstance();
         WPCore.imageLoaderConfig(this);
         WPCore.getInstance().loadData();
+        /*
         WPService_.intent(getApplicationContext())
                 .extra("runState", WPService.INIT)
                 .start();
+                */
+        WPCore.scheduleWallpaperAlarm(getApplicationContext(), WPCore.getAppData().getTimeInterval());
         logger.info("App Initialized!!");
     }
 
